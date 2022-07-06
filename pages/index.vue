@@ -1,97 +1,131 @@
 <template>
   <v-container>
-    <v-row>
-      <v-text-field
-        prepend-icon="mdi-magnify-plus-outline"
-        type="search"
-        label="アルバム検索"
-        v-model="query"
-        solo
-        height="30"
-        rounded
-        @input="getSearch"
-        class="mt-4"
-        id="searchField"
-        hint="アルバム名またはアーティスト名を入力"
-      />
-    </v-row>
-    <v-row>
-      <v-col v-for="result in results" :key="result.id" cols="6" sm="3">
-        <v-card height="100%" class="black--text white">
-          <v-img
-            :src="'http://image.tmdb.org/t/p/w300/' + result.poster_path"
+    <div class="search-sticky">
+      <v-row>
+        <v-col class="py-0" cols="12" sm="8" md="6">
+          <v-text-field
+            prepend-inner-icon="mdi-magnify"
+            type="search"
+            label="アルバム検索"
+            v-model="query"
+            solo
+            height="50"
+            rounded
+            @input="getSearch"
+            class="mt-4"
+            id="searchField"
+            hint="アーティスト、曲、アルバム名など"
           />
-          <v-card-title class="justify-center text-body-1 text-sm-h6">{{
-            result.title
-          }}</v-card-title>
-          <v-card-subtitle
-            class="black--text justify-center text-caption text-sm-body-2"
-          >
-            {{ result.release_date }}
-          </v-card-subtitle>
-          <v-card-actions class="justify-center">
-            <v-btn
-              v-if="checkSelectMovie(result)"
-              @click="removeMovies(result)"
-            >
-              <v-icon>mdi-minus</v-icon>
-            </v-btn>
-            <v-btn v-else @click="pushMovies(result)">
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </v-card-actions>
-          <v-card-text v-if="toggle" class="black--text">
-            {{ result.overview }}
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </div>
+    <v-row>
+      <v-container class="darken-4">
+        <v-row justify-center>
+          <v-col v-if="isVisible" v-for="result in results" :key="result.id" cols="6" sm="3">
+            <v-hover v-slot:default="{ hover }">
+              <v-card class="album-card" flat>
+                <v-card-text>
+                  <v-img
+                    class="elevation-10"
+                    :src="result.album.images[0].url"
+                  >
+                  </v-img>
+                </v-card-text>
+
+                <v-card-text class="pt-0">
+                  <p class="body-2 font-weight-medium ma-0 text-truncate white--text">
+                    {{ result.album.name }}
+                  </p>
+                  <p class="caption font-weight-light mb-4 text-truncate">
+                    {{ result.album.artists[0].name }}
+                  </p>
+
+                  <div
+                    style="position: absolute; right: 10px; bottom: 10px"
+                    v-show="hover"
+                  >
+                    <v-icon size="35">mdi-play-circle-outline</v-icon>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-hover>
+
+            <!-- <v-card class="mx-auto" tile height="100%">
+              <v-card tile>
+                <v-img :src="result.album.images[0].url"></v-img>
+              </v-card>
+              <v-card-title
+                class="text-h5"
+                v-text="result.album.name"
+              ></v-card-title>
+              <v-card-subtitle
+               v-text="result.album.artists[0].name"
+              ></v-card-subtitle>
+            </v-card> -->
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-row> 
   </v-container>
+
 </template>
 
+<!-- <iframe
+              class:="iframe" 
+              :src="`https://open.spotify.com/embed/album/${result.album.id}`" 
+              width="100%" 
+              height="100%" 
+              frameBorder="1" 
+              allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
+              allowfullscreen >
+              </iframe> -->
+
 <script>
+import axios from '@/plugins/axios';
+
+
 export default {
-  asyncData({ $config: { apiKey } }) {
-    return { apiKey };
-  },
+
   name: "TopIndex",
   data() {
     return {
-      query: "",
+      query: '',
       results: [],
+      isVisible: false,
     };
-  },
-  computed: {
-    movies() {
-      return this.$store.state.movies.movies;
-    },
-  },
+  },  
   mounted() {
     document.getElementById("searchField").focus();
   },
   methods: {
-    getSearch() {
-      this.$axios
-        .get("https://api.themoviedb.org/3/search/movie", {
-          params: { api_key: this.apiKey, query: this.query, language: "ja" },
-        })
-        .then((response) => {
-          this.results = response.data.results;
-        })
-        .catch(() => {
-          location.reload();
+    async getSearch() {
+      if (this.query.length > 0) {
+        const { data } = await axios.get("/api/v1/search", {
+          params: {
+            query: this.query,
+          },
         });
-    },
-    pushMovies(movie) {
-      if (this.movies.length < 5)
-        this.$store.dispatch("movies/addMovies", movie);
-    },
-    removeMovies(movie) {
-      this.$store.dispatch("movies/deleteMovies", movie);
-    },
-    checkSelectMovie(result) {
-      return this.movies.some((movie) => movie.id === result.id);
+        this.results = data;
+        this.isVisible = true;
+        console.log(this.results);
+        console.log(this.results.length);
+      } else {
+        this.results = [];
+        this.isVisible = false;
+        return;
+        console.log("エラーです");
+      };
     },
   },
 };
 </script>
+
+<style>
+.iframe {
+ left: 0; 
+ width: 100%; 
+ height: 380px; 
+ position: relative;
+}
+</style>
