@@ -1,26 +1,26 @@
 <template>
   <v-container>
-    <div class="search-sticky">
-      <v-row>
+    <v-container>
+      <v-row >
         <v-col class="py-0" cols="12" sm="8" md="6">
           <v-text-field
             prepend-inner-icon="mdi-magnify"
             type="search"
-            label="アルバム検索"
+            label="アーティスト、曲、アルバム名"
             v-model="query"
             solo
-            height="50"
+            height="20"
             rounded
             @input="getSearch"
-            class="mt-4"
             id="searchField"
-            hint="アーティスト、曲、アルバム名など"
+            :class="{ 'fixed': scrollY > 10 }"
           />
         </v-col>
       </v-row>
-    </div>
+    </v-container>
+    
     <v-row>
-      <v-container class="darken-4">
+      <v-container class="pt-10">
         <v-row justify-center>
           <v-col v-if="isVisible" v-for="result in results" :key="result.id" cols="6" sm="3">
             <v-hover v-slot:default="{ hover }">
@@ -40,16 +40,33 @@
                   <p class="caption font-weight-light mb-4 text-truncate">
                     {{ result.album.artists[0].name }}
                   </p>
-
-                  <div
-                    style="position: absolute; right: 10px; bottom: 10px"
-                    v-show="hover"
-                  >
-                    <v-icon size="35">mdi-play-circle-outline</v-icon>
-                  </div>
                 </v-card-text>
+
+                <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" @click="setSong(result)">
+                      <v-icon size="35">mdi-play-circle-outline</v-icon>
+                    </v-btn>
+                  </template>
+                    <v-card class="mx-auto" tile height="100%">
+                      <iframe
+                        class:="iframe" 
+                        :src="song"
+                        width="100%" 
+                        height="300px" 
+                        frameBorder="1" 
+                        allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
+                        allowfullscreen >
+                      </iframe>
+                    </v-card>
+                </v-dialog>
+
               </v-card>
+
+
             </v-hover>
+
+
 
             <!-- <v-card class="mx-auto" tile height="100%">
               <v-card tile>
@@ -71,15 +88,6 @@
 
 </template>
 
-<!-- <iframe
-              class:="iframe" 
-              :src="`https://open.spotify.com/embed/album/${result.album.id}`" 
-              width="100%" 
-              height="100%" 
-              frameBorder="1" 
-              allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
-              allowfullscreen >
-              </iframe> -->
 
 <script>
 import axios from '@/plugins/axios';
@@ -93,10 +101,14 @@ export default {
       query: '',
       results: [],
       isVisible: false,
+      scrollY: 0,
+      dialog: false,
+      song: '',
     };
   },  
   mounted() {
     document.getElementById("searchField").focus();
+    window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
     async getSearch() {
@@ -117,6 +129,16 @@ export default {
         console.log("エラーです");
       };
     },
+    setSong(result) {
+      this.song = `https://open.spotify.com/embed/album/${result.album.id}`;
+      console.log(this.song);
+    },
+    getSong() {
+      return this.song;
+    },
+    handleScroll() {
+      this.scrollY = window.scrollY;
+    },
   },
 };
 </script>
@@ -127,5 +149,10 @@ export default {
  width: 100%; 
  height: 380px; 
  position: relative;
+}
+.fixed {
+  /* 上部に固定する */
+  position: fixed;
+  z-index: 1;
 }
 </style>
