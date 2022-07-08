@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="isDisplay" width="80vh">
     <v-card v-if="isDisplay">
-      <v-card>
-        <v-card-text >
+      <v-card class="mx-auto mt-5">
+        <v-card-text>
           <iframe
             class="iframe" 
             :src="`https://open.spotify.com/embed/album/${song}`"

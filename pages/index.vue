@@ -14,6 +14,15 @@
             id="searchField"
             :class="{ 'fixed': scrollY > 10 }"
           />
+           <div class="page">
+            <Login />
+             <p
+              v-if="user.login"
+              class="text"
+             >
+              ログインに成功！
+            </p>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -93,6 +102,7 @@
 <script>
 import axios from '@/plugins/axios';
 import SongList from '@/components/SongList';
+import Login from '@/components/Login';
 
 
 export default {
@@ -110,6 +120,12 @@ export default {
   },  
   components: {
     SongList,
+    Login,
+  },
+  computed: {
+    user () {
+      return this.$store.getters['user']
+    },
   },
   mounted() {
     document.getElementById("searchField").focus();
