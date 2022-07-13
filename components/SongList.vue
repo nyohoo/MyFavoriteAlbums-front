@@ -2,10 +2,9 @@
   <v-col cols="6" sm="3">
     <v-hover v-slot:default="{ hover }">
       <v-card class="album-card" flat>
-        <v-card tile @click="openDisplay">
+        <v-card tile @click="openDisplay" :class="{ 'on-hover': hover }">
           <v-img
             class="elevation-10"
-
             :src="result.album.images[0].url"
           >
           </v-img>
