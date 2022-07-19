@@ -106,13 +106,23 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'Inspire',
           to: '/inspire'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Login',
+          to: '/login'
+        },
+        {
+          icon: 'mdi-logout',
+          title: 'Logout',
+          to: '/logout'
         }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'MyFavoriteAlbums'
     }
-  }
+  },
 }
 </script>

@@ -30,13 +30,10 @@
 
 
 <script>
-import axios from '@/plugins/axios';
+import { axios }  from '@/plugins/axios';
 import SongList from '@/components/SongList';
 
-
 export default {
-
-  name: "TopIndex",
   data() {
     return {
       query: '',
@@ -54,7 +51,7 @@ export default {
     albums() {
       return this.$store.state.albums.albums;
     },
-  },
+    },
   mounted() {
     document.getElementById("searchField").focus();
     window.addEventListener('scroll', this.handleScroll);
@@ -62,15 +59,17 @@ export default {
   methods: {
     async getSearch() {
       if (this.query.length > 0) {
-        const { data } = await axios.get("/api/v1/search", {
+        const data = await axios.$get("/api/v1/search", {
           params: {
             query: this.query,
           },
         });
+
         this.results = data;
         this.isVisible = true;
-        console.log("文字列あり");
-        console.log(this.isVisible);
+        // console.log("文字列あり");
+        // console.log(this.results);
+        // console.log(this.isVisible);
       } else {
         this.results = [];
         this.isVisible = false;

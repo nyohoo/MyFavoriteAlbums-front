@@ -29,6 +29,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '@/plugins/axios',
+    '@/plugins/cookie',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,13 +47,15 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // '@nuxtjs/auth',
+    'cookie-universal-nuxt',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
-  },
+    host: 'localhost', // APIドメイン
+    port: 3000,
+   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
