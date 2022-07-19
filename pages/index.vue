@@ -16,14 +16,11 @@
         </v-col>
       </v-row>
     </v-container>
-    
-    <v-row>
-      <v-container class="pt-10">
-        <v-row justify-center>
-          <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result" />
-        </v-row>
-      </v-container>
-    </v-row> 
+    <v-container>
+      <v-row justify-center>
+        <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result" class="d-flex child-flex" />
+      </v-row>
+    </v-container>
   </v-container>
 
 </template>
