@@ -5,5 +5,9 @@ export default ({ store, app, $axios }) => {
   if (session) {
     store.commit('login/user', session.user)
     store.commit('login/auth', session.tokens)
+    console.log("store/login/の中身")
+    console.log(store.state.login.user)
+    console.log(store.state.login.auth)
+    console.log("store/login/の中身ここまで")
   }
 }

@@ -31,7 +31,6 @@ export default {
   plugins: [
     '@/plugins/axios',
     '@/plugins/cookie',
-    // { src: '~/plugins/cookie-storage.js' } // cookie-storage.jsを読み込む
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
