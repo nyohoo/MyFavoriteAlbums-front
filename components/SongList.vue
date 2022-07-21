@@ -86,6 +86,11 @@
             width="40px"
           >
             <v-icon color="green">mdi-heart</v-icon>
+            <v-badge
+              color="primary"
+              v-if="albums.length"
+              :content="getAlbumIndex(result) + 1"
+            />
           </v-btn>
           <v-btn
             v-else-if="checkCountAlbum()"
@@ -129,15 +134,16 @@ export default {
       this.$refs.iframe.isDisplay = true
     },
     pushAlbums(album) {
-      if (this.albums.length < 9) {
-        this.$store.dispatch("albums/addAlbums", album);
-      }
+      this.$store.dispatch("albums/addAlbums", album);
     },
     removeAlbums(album) {
       this.$store.dispatch("albums/deleteAlbums", album);
     },
     checkSelectAlbum(result) {
       return this.albums.some((album) => album.id === result.id);
+    },
+    getAlbumIndex(result) {
+      return this.albums.indexOf(result);
     },
     checkCountAlbum() {
       return this.albums.length < 9;
