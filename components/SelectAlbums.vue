@@ -1,31 +1,57 @@
 <template>
-  <v-dialog width="60vh" height="60vh"
+  <v-dialog width="65vh" height="60vh"
     v-model="isDisplay" 
     v-if="isDisplay"
     >
       <v-card height="50%">
-        <div
-          v-for="result in results"
-          :key="result.id"
-          class="images-brick-layout"
+
+        <draggable
+          v-if="results.length"
+          v-model="results"
+          element="div"
+          :animation="260"
+          style="justify-content: center; align-items: center"
+          class="row pa-10"
+          height="900"
         >
-          <div class="images-brick-item">
-          <i :style="{ paddingBottom: paddingBottom}"></i>
-          <v-img
-            :src="result.album.images[0].url"
-            :lazy-src="result.album.images[0].url"
-            :alt="result.album.name"
-            aspect-ratio="1"
-            class="ma-2 mb-0 rounded-0 brick-item-image img"
-            height="15vh"
-            width="15vh"
+
+          <v-col
+            v-for="result in results"
+            :key="result.id"
+            class="d-flex child-flex ma-0 pa-0"
+            cols="4"
           >
-          </v-img>
-            <!-- <v-btn @click="removeAlbums(result)" class="mr-auto ml-auto">
-              <v-icon>mdi-minus</v-icon>
-            </v-btn> -->
-          </div>
-        </div>
+            <v-img
+              :src="result.album.images[0].url"
+              :lazy-src="result.album.images[0].url"
+              :alt="result.album.name"
+              aspect-ratio="1"
+              class="ma-0 rounded-0"
+            >
+
+              <template v-slot:placeholder>
+                <v-row
+                  class="fill-height ma-0"
+                  align="center"
+                  justify="center"
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+
+            </v-img>
+              <!-- <v-btn @click="removeAlbums(result)" class="mr-auto ml-auto">
+                <v-icon>mdi-minus</v-icon>
+              </v-btn> -->
+          </v-col>
+
+        </draggable>
+
+
+
         <v-container v-if="!results.length" style="height: 300px">
           <div style="height: 100%" class="text-center">
             <p class="mt-16">ここに選んだアルバムが表示されます。</p>
@@ -53,16 +79,26 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 export default {
   data() {
     return {
       isDisplay: false,
     };
   },
+  components: {
+    draggable,
+  },
   computed: {
-    results() {
-      return this.$store.state.albums.albums;
-    },
+    results: {
+      get() {
+        return this.$store.state.albums.albums;
+      },
+      set(val) {
+        return this.$store.dispatch('albums/updateAlbums', val);
+      },
+    }
   },
   methods: {
     removeAlbums(result) {
@@ -76,25 +112,4 @@ export default {
 </script>
 
 <style>
-.images-brick-layout{
-  display: flex;
-  flex-wrap: wrap;
-  &:after{
-    content: '';
-    flex-grow: 999999999;
-  }
-  .images-brick-item{
-    cursor: pointer;
-    margin: 2px;
-    position: relative;
-  }
-  i{
-    display: block;
-  }
-  img {
-    top: 0;
-    width: 100%;
-    vertical-align: bottom;
-  }
-}
 </style>
