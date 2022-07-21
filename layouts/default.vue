@@ -40,7 +40,7 @@
         icon
         @click.stop="clipped = !clipped"
       >
-        <v-icon>mdi-application</v-icon>
+        <v-icon>mdi-playlist-music-outline</v-icon>
       </v-btn>
       <v-btn
         icon
@@ -69,13 +69,16 @@
       fixed
     >
       <v-list>
-        <v-list-item @click.native="right = !right">
+        <v-list-item >
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-switch v-model="theme">
+
+            </v-switch>
           </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+            <v-icon light>
+            mdi-brightness-4
+            </v-icon>
+          <v-list-item-title>Light / Dark</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -96,6 +99,7 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      theme: this.$store.state.thema.theme,
       items: [
         {
           icon: 'mdi-apps',
@@ -119,10 +123,16 @@ export default {
         }
       ],
       miniVariant: false,
-      right: true,
       rightDrawer: false,
+      right: true,
       title: 'MyFavoriteAlbums'
     }
+  },
+  watch: {
+    theme() {
+      this.$store.dispatch("thema/theme", this.theme);
+      this.$vuetify.theme.dark = this.theme;
+    },
   },
 }
 </script>
