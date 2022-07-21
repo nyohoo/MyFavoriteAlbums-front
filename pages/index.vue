@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-container>
-      <v-row >
+    <v-container class="pt-7 pb-0">
+      <v-row>
         <v-col class="py-0" cols="12" sm="8" md="6">
           <v-text-field
             prepend-inner-icon="mdi-magnify"
@@ -14,6 +14,19 @@
             :class="{ 'fixed': scrollY > 10 }"
           />
         </v-col>
+        <v-col class="py-0 pl-0"
+          cols="12" sm="8" md="6"
+          >
+          <v-btn @click="openSelectAlbums" rounded x-large >
+            <v-icon class="mr-2">mdi-album</v-icon>画像作成
+            <v-badge
+              color="primary"
+              v-if="this.albums.length"
+              :content="this.albums.length"
+            />
+          <SelectAlbums ref="selectAlbums" />
+          </v-btn>
+        </v-col>
       </v-row>
     </v-container>
     <v-container>
@@ -22,13 +35,13 @@
       </v-row>
     </v-container>
   </v-container>
-
 </template>
 
 
 <script>
 import { axios }  from '@/plugins/axios';
 import SongList from '@/components/SongList';
+import SelectAlbums from '@/components/SelectAlbums';
 
 export default {
   data() {
@@ -43,6 +56,7 @@ export default {
   },  
   components: {
     SongList,
+    SelectAlbums,
   },
   computed: {
     albums() {
@@ -92,16 +106,17 @@ export default {
     handleScroll() {
       this.scrollY = window.scrollY;
     },
+    openSelectAlbums() {
+      this.$refs.selectAlbums.isDisplay = true
+    },
   },
 };
 </script>
 
 <style>
 .iframe {
- left: 0; 
  width: 100%; 
  height: 380px; 
- position: relative;
 }
 .fixed {
   /* 上部に固定する */
