@@ -22,12 +22,24 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item >
+          <v-list-item-action>
+            <v-switch v-model="theme" dense>
+            </v-switch>
+          </v-list-item-action>
+            <v-icon left>
+            mdi-brightness-4
+            </v-icon>
+          <v-list-item-title>Light / Dark</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
       fixed
       app
+      class="color"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
@@ -103,13 +115,8 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Top',
           to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
         },
         {
           icon: 'mdi-account',
@@ -136,3 +143,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.color {
+  background:linear-gradient(20deg, #191414, #1d8842);
+}
+</style>
