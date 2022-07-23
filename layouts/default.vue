@@ -22,12 +22,24 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item >
+          <v-list-item-action>
+            <v-switch v-model="theme" dense>
+            </v-switch>
+          </v-list-item-action>
+            <v-icon left>
+            mdi-brightness-4
+            </v-icon>
+          <v-list-item-title>Light / Dark</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
       fixed
       app
+      class="color"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn
@@ -40,7 +52,7 @@
         icon
         @click.stop="clipped = !clipped"
       >
-        <v-icon>mdi-application</v-icon>
+        <v-icon>mdi-playlist-music-outline</v-icon>
       </v-btn>
       <v-btn
         icon
@@ -69,13 +81,16 @@
       fixed
     >
       <v-list>
-        <v-list-item @click.native="right = !right">
+        <v-list-item >
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-switch v-model="theme">
+
+            </v-switch>
           </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+            <v-icon light>
+            mdi-brightness-4
+            </v-icon>
+          <v-list-item-title>Light / Dark</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -96,16 +111,12 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      theme: this.$store.state.thema.theme,
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Top',
           to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
         },
         {
           icon: 'mdi-account',
@@ -119,10 +130,22 @@ export default {
         }
       ],
       miniVariant: false,
-      right: true,
       rightDrawer: false,
+      right: true,
       title: 'MyFavoriteAlbums'
     }
   },
+  watch: {
+    theme() {
+      this.$store.dispatch("thema/theme", this.theme);
+      this.$vuetify.theme.dark = this.theme;
+    },
+  },
 }
 </script>
+
+<style>
+.color {
+  background:linear-gradient(20deg, #191414, #1d8842);
+}
+</style>
