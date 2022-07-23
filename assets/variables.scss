@@ -2,5 +2,13 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
+
 $dialog-margin: 12px !default;
 $dialog-max-height: 100% !default;
+
+$checkbox-disabled-opacity: 0.9;
+$checkbox-disabled-color: primary;
+
+$body-font-family: 'Noto Sans JP';
+$font-size-root: 18px;
+@import '~vuetify/src/styles/styles.sass';

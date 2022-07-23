@@ -55,7 +55,7 @@
         
         
         <v-card-text class="pt-3 pb-0">
-          <p class="body-2 font-weight-medium ma-0 text-truncate">
+          <p class="body-2 font-weight-bold ma-0 text-truncate" :class="">
             {{ result.album.name }}
           </p>
           <p class="caption font-weight-light mb-0 text-truncate">
@@ -72,7 +72,7 @@
             right
             width="40px"
           >
-            <v-icon>mdi-play-circle</v-icon>
+            <v-icon color="secondary">mdi-play-circle</v-icon>
             <Iframe ref="iframe" :song="result.album.id" />
           </v-btn>
           <v-btn
@@ -85,7 +85,7 @@
             right
             width="40px"
           >
-            <v-icon color="green">mdi-heart</v-icon>
+            <v-icon color="primary">mdi-heart</v-icon>
             <v-badge
               color="primary"
               v-if="albums.length"
