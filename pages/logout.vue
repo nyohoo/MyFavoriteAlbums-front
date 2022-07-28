@@ -27,7 +27,8 @@ export default {
       this.$cookies.removeAll()
       this.$store.commit('login/user', {})
       this.$store.commit('login/auth', null)
-      this.$router.push('/')
+      window.localStorage.removeItem('albums');
+      window.location.href = '/'
     },
   },
 }
