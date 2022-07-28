@@ -1,8 +1,9 @@
 <template>
   <v-container>
-    <v-container class="pt-7 pb-0">
-      <v-row no-gutters>
 
+  <v-card color="#121212" flat tile >
+    <v-container class="pt-7 pb-0">
+      <v-row >
         <!-- ハッシュタグの選択機能は一旦保留 -->
         <!-- <v-col cols="2" sm="8"  class="mr-4">
           <v-select
@@ -19,33 +20,49 @@
           ></v-select>
         </v-col> -->
 
-        <v-col class="mr-2 py-0" cols="4" sm="8" >
+        <v-col class="mr-2 py-0" cols="12" sm="8" md="8">
           <v-text-field
             prepend-inner-icon="mdi-magnify"
             label="Artist, Album, Songs"
             v-model="query"
-            solo
-            rounded
-            @input="getSearch"
+            :solo="scrollY > 10"
+            
+            @input="handleChange"
             id="searchField"
             :class="{ 'fixed': scrollY > 10 }"
-          />
-        </v-col>
-        <v-col class="py-0 pl-3"
-          cols="2" sm="2" md="2"
           >
-          <v-btn @click="openSelectAlbums" rounded x-large >
-            <v-icon class="mr-2">mdi-album</v-icon>画像作成
-            <v-badge
-              color="primary"
-              v-if="this.albums.length"
-              :content="this.albums.length"
-            />
-          <SelectAlbums ref="selectAlbums" /> 
-          </v-btn>
+
+            <template v-slot:append-outer >
+            <!-- <v-col class="mt-0 pt-0"
+              cols="2" sm="2" md="2"
+            > -->
+              <v-btn @click="openSelectAlbums"
+                rounded
+                large
+                class="my-0 ml-0"
+                style="top: -10px;"
+                :tile="scrollY > 10"
+                :style="{ 'left': scrollY > 10 ? '-10px' : '0px' }"
+              >
+                <v-icon left>mdi-playlist-check</v-icon>作成
+                <v-badge
+                  color="primary"
+                  v-if="albums.length"
+                  :content="albums.length"
+                />
+              <SelectAlbums ref="selectAlbums" /> 
+              </v-btn>
+            <!-- </v-col> -->
+            </template>
+
+          </v-text-field>
         </v-col>
+        
       </v-row>
+      
     </v-container>
+    </v-card>
+
     <v-container>
       <v-row justify-center>
         <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result" class="d-flex child-flex" />
@@ -59,6 +76,18 @@
 import { axios }  from '@/plugins/axios';
 import SongList from '@/components/SongList';
 import SelectAlbums from '@/components/SelectAlbums';
+
+const debounce = (func, wait = 500) => {
+  var timerId;
+  return function(...args){
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      func.apply(this, args);
+    }, wait);
+  };
+};
 
 export default {
   data() {
@@ -78,8 +107,6 @@ export default {
       //   { state: '#2022上半期ベストアルバム', abbr: 'CA' },
       //   { state: '#2022年間ベストアルバム', abbr: 'NY' },
       // ],
-
-
     };
   },  
   components: {
@@ -96,19 +123,20 @@ export default {
     window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
+    handleChange: debounce(function() {
+      this.getSearch();
+    }, 500),
     async getSearch() {
       if (this.query.length > 0) {
+
         const data = await axios.$get("/api/v1/search", {
           params: {
             query: this.query,
           },
         });
-
+        console.log(data);
         this.results = data;
         this.isVisible = true;
-        // console.log("文字列あり");
-        // console.log(this.results);
-        // console.log(this.isVisible);
       } else {
         this.results = [];
         this.isVisible = false;
@@ -150,6 +178,6 @@ export default {
   /* 上部に固定する */
   position: fixed;
   z-index: 9999;
-  top: 7px; 
+  top: 7px;
 }
 </style>
