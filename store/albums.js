@@ -30,4 +30,7 @@ export const mutations = {
   deleteAllAlbums(state) {
     state.albums = [];
   },
+  createAlbums(state, albums) {
+    state.albums = albums;
+  }
 };
