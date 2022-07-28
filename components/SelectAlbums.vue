@@ -242,7 +242,7 @@ export default {
       set(val) {
         return this.$store.dispatch('albums/updateAlbums', val);
       },
-    }
+    },
   },
   methods: {
     openIframe(result) {
@@ -300,7 +300,8 @@ export default {
           if (this.$store.state.login.user) {
             // アルバムを作成する
             await this.$axios.$post("api/v1/posts", {
-              albums: this.results,
+              album_ids: this.results.map(album => album.id),
+              image_paths: this.results.map(album => album.images[0].url),
               hash_tag: "#私を構成する9枚"
             }).then(response => {
               console.log("レスポンス内容の確認");
