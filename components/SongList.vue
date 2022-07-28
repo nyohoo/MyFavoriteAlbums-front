@@ -1,18 +1,17 @@
 <template>
-
   <v-col cols="6" sm="3">
     <v-hover v-slot="{ hover }">
       <v-card class="album-card rounded"
           >
         <!-- issue:hoverがつかない・・・ -->
-          <v-card 
-            tile 
-            flat
-          >
+        <v-card 
+          tile 
+          flat
+        >
           <v-img
-            :src="result.album.images[0].url"
-            :lazy-src="result.album.images[0].url"
-            :alt="result.album.name"
+            :src="result.images[0].url"
+            :lazy-src="result.images[0].url"
+            :alt="result.name"
             aspect-ratio="1"
             @click="openIframe"
             class="ma-2 mb-0 rounded-0"
@@ -30,36 +29,14 @@
                 ></v-progress-circular>
               </v-row>
             </template>
-            <!-- <v-expand-transition>
-              <div
-                v-if="hover"
-                class="d-flex transition-fast-in-fast-out  darken-2 v-card--reveal text-h2 white--text"
-                style="height: 100%;"
-              >
-          <v-btn
-            @click="openIframe"
-            class="ml-0"
-            fab
-            icon
-            height="40px"
-            right
-            width="40px"
-          >
-            <v-icon color="green">mdi-play-circle</v-icon>
-            
-          </v-btn>
-              </div>
-            </v-expand-transition> -->
           </v-img>
-          </v-card>
-        
-        
+        </v-card>
         <v-card-text class="pt-3 pb-0">
-          <p class="body-2 font-weight-bold ma-0 text-truncate" :class="">
-            {{ result.album.name }}
+          <p class="body-2 font-weight-bold ma-0 text-truncate white--text">
+            {{ result.name }}
           </p>
           <p class="caption font-weight-light mb-0 text-truncate">
-            {{ result.album.artists[0].name }}
+            {{ result.artists[0].name }}
           </p>
         </v-card-text>
         <v-card-actions>
@@ -73,7 +50,12 @@
             width="40px"
           >
             <v-icon color="secondary">mdi-play-circle</v-icon>
-            <Iframe ref="iframe" :song="result.album.id" />
+            <Iframe
+              :isDisplay="iframe"
+              :isSongList="isSongList"
+              :song="result.id"
+              @closeDialog="iframe = false, isSongList = false" 
+            />
           </v-btn>
           <v-btn
             v-if="checkSelectAlbum(result)"
@@ -113,8 +95,13 @@
 <script>
 import Iframe from '@/components/Iframe.vue'
 
-
 export default {
+  data() {
+    return {
+      iframe: false,
+      isSongList: false,
+    };
+  },
   props: {
     result: {
       type: Object,
@@ -131,7 +118,8 @@ export default {
   },
   methods: {
     openIframe() {
-      this.$refs.iframe.isDisplay = true
+      this.iframe = true
+      this.isSongList = true
     },
     pushAlbums(album) {
       this.$store.dispatch("albums/addAlbums", album);
@@ -143,7 +131,7 @@ export default {
       return this.albums.some((album) => album.id === result.id);
     },
     getAlbumIndex(result) {
-      return this.albums.indexOf(result);
+      return this.albums.findIndex((album) => album.id === result.id);
     },
     checkCountAlbum() {
       return this.albums.length < 9;
