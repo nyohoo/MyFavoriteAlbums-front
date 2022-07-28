@@ -31,6 +31,7 @@ export default {
   plugins: [
     '@/plugins/axios',
     '@/plugins/cookie',
+    { src: "@/plugins/localStorage", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -65,12 +66,13 @@ export default {
       dark: true,
       themes: {
         dark: {
+            background: "#202225",
             primary: "#1DB954",
             secondary: "#8bc34a",
             accent: "#cddc39",
             error: "#ffeb3b",
             warning: "#ffc107",
-            info: "#ff5722",
+            info: colors.blue.darken1,
             success: "#795548"
         },
         light: {
