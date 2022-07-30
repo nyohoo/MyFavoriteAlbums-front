@@ -26,7 +26,6 @@
             label="Artist, Album, Songs"
             v-model="query"
             :solo="scrollY > 10"
-            
             @input="handleChange"
             id="searchField"
             :class="{ 'fixed': scrollY > 10 }"
@@ -90,6 +89,21 @@ const debounce = (func, wait = 500) => {
 };
 
 export default {
+  head() {
+    return {
+      title: '投稿作成',
+      meta: [
+        {
+          name: 'description',
+          content: '投稿作成ページです。'
+        },
+        {
+          name: 'keywords',
+          content: '投稿作成, 投稿, 作成, 検索, 検索ページ'
+        }
+      ]
+    }
+  },
   data() {
     return {
       query: '',
