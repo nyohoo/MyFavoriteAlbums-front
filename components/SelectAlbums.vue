@@ -304,17 +304,9 @@ export default {
               image_paths: this.results.map(album => album.images[0].url),
               hash_tag: "#私を構成する9枚"
             }).then(response => {
-              console.log("レスポンス内容の確認");
-              console.log(response);
-              console.log("レスポンス内容ここまで");
+                window.localStorage.removeItem('albums');
+                this.$router.push(`/details/${response}`);
             });
-            // アルバム作成後に結果画面にリダイレクト
-            // this.$router.push({
-            //   name: "result",
-            //   params: {
-            //     id: data.id,
-            //   },
-            // });
           } else {
             // ログインしていない場合はログイン画面にリダイレクト
             this.$router.push({
