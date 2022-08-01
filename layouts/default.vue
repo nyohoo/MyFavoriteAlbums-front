@@ -46,24 +46,16 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    
+
     <v-app-bar
       :clipped-left="clipped"
       fixed
       app
       class="color"
       dark
-      
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-playlist-music-outline</v-icon>
-      </v-btn>
-
+        <v-icon dense>mdi-pound</v-icon>
       <!-- <v-btn
         icon
         @click.stop="fixed = !fixed"
@@ -71,7 +63,9 @@
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
       
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title>
+        <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
+      </v-toolbar-title>
       <v-spacer />
       <!-- <v-btn
         icon
@@ -117,6 +111,14 @@
 <script>
 export default {
   name: 'DefaultLayout',
+  head: {
+    link: [
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap"
+      }
+    ]
+  },
   data () {
     return {
       clipped: false,
