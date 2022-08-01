@@ -1,11 +1,11 @@
 <template>
   <v-container>
 
-  <v-card color="#121212" flat tile >
-    <v-container class="pt-7 pb-0">
-      <v-row >
-        <!-- ハッシュタグの選択機能は一旦保留 -->
-        <!-- <v-col cols="2" sm="8"  class="mr-4">
+    <v-card color="#121212" flat tile>
+      <v-container class="pt-7 pb-0">
+        <v-row>
+          <!-- ハッシュタグの選択機能は一旦保留 -->
+          <!-- <v-col cols="2" sm="8"  class="mr-4">
           <v-select
             v-model="select"
             :hint="`${select.state}`"
@@ -19,51 +19,45 @@
             dense
           ></v-select>
         </v-col> -->
-
-        <v-col class="mr-2 py-0" cols="12" sm="8" md="8">
-          <v-text-field
-            prepend-inner-icon="mdi-magnify"
-            label="Artist, Album, Songs"
-            v-model="query"
-            :solo="scrollY > 10"
-            @input="handleChange"
-            id="searchField"
-            :class="{ 'fixed': scrollY > 10 }"
-          >
-
-            <template v-slot:append-outer >
-            <!-- <v-col class="mt-0 pt-0"
+          <v-col class="mr-2 py-0" cols="12" sm="8" md="8">
+            <!-- 検索フォーム -->
+            <v-text-field 
+              prepend-inner-icon="mdi-magnify" 
+              label="Artist, Album, Songs" 
+              v-model="query"
+              :solo="scrollY > 10" 
+              @input="handleChange" 
+              id="searchField" 
+              :class="{ 'fixed': scrollY > 10 }"
+            >
+              <template v-slot:append-outer>
+                <!-- <v-col class="mt-0 pt-0"
               cols="2" sm="2" md="2"
             > -->
-              <v-btn @click="openSelectAlbums"
-                rounded
-                large
-                class="my-0 ml-0"
-                style="top: -10px;"
-                :tile="scrollY > 10"
-              >
-                <v-icon left>mdi-playlist-check</v-icon>作成
-                <v-badge
-                  color="primary"
-                  v-if="albums.length"
-                  :content="albums.length"
-                />
-              <SelectAlbums ref="selectAlbums" />
-              </v-btn>
-            <!-- </v-col> -->
-            </template>
-
-          </v-text-field>
-        </v-col>
-        
-      </v-row>
-      
-    </v-container>
+                <v-btn @click="openSelectAlbums" rounded large class="my-0 ml-0" style="top: -10px;"
+                  :tile="scrollY > 10">
+                  <v-icon left>mdi-playlist-check</v-icon>作成
+                  <v-badge color="primary" v-if="albums.length" :content="albums.length" />
+                  <SelectAlbums ref="selectAlbums" />
+                </v-btn>
+                <!-- </v-col> -->
+              </template>
+            </v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
 
+    <!-- 検索結果の表示 -->
     <v-container>
       <v-row justify-center>
-        <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result" class="d-flex child-flex" />
+        <SongList 
+          v-if="isVisible" 
+          v-for="result in results" 
+          :key="result.id" 
+          :result="result"
+          class="d-flex child-flex" 
+        />
       </v-row>
     </v-container>
   </v-container>
@@ -71,13 +65,13 @@
 
 
 <script>
-import { axios }  from '@/plugins/axios';
+import { axios } from '@/plugins/axios';
 import SongList from '@/components/SongList';
 import SelectAlbums from '@/components/SelectAlbums';
 
 const debounce = (func, wait = 500) => {
   var timerId;
-  return function(...args){
+  return function (...args) {
     if (timerId) {
       clearTimeout(timerId);
     }
@@ -121,7 +115,7 @@ export default {
       //   { state: '#2022年間ベストアルバム', abbr: 'NY' },
       // ],
     };
-  },  
+  },
   components: {
     SongList,
     SelectAlbums,
@@ -130,13 +124,13 @@ export default {
     albums() {
       return this.$store.state.albums.albums;
     },
-    },
+  },
   mounted() {
     document.getElementById("searchField").focus();
     window.addEventListener('scroll', this.handleScroll);
   },
   methods: {
-    handleChange: debounce(function() {
+    handleChange: debounce(function () {
       this.getSearch();
     }, 500),
     async getSearch() {
@@ -179,9 +173,10 @@ export default {
 
 <style>
 .iframe {
- width: 100%; 
- height: 380px; 
+  width: 100%;
+  height: 380px;
 }
+
 .fixed {
   /* 上部に固定する */
   position: fixed;

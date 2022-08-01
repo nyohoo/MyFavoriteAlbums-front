@@ -15,6 +15,7 @@
     <v-card 
       color="white"
       class="transparent"
+      hover
     >
       <v-card-actions> 
         <v-btn 
