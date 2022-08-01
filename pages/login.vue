@@ -62,13 +62,25 @@
 
 <script>
 export default {
-  layout: 'default',
-  data: () => ({
-    twitter: {
-      url: 'http://localhost:3000/api/v1/auth/twitter',
-      redirectUrl: 'http://localhost:8080/oauth/twitter/callback'
-    },
-  }),
+  head() {
+    return {
+      title: 'ログイン',
+      meta: [
+        {
+          name: 'description',
+          content: 'ログインページです。',
+        },
+      ],
+    };
+  },
+  data() {
+    return {
+      twitter: {
+        url: 'http://localhost:3000/api/v1/auth/twitter',
+        redirectUrl: 'http://localhost:8080/oauth/twitter/callback'
+      },
+    };
+  },
   computed: {
     twitterLoginURL() {
       return `${this.twitter.url}?auth_origin_url=${encodeURI(this.twitter.redirectUrl)}`

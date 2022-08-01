@@ -20,6 +20,21 @@
 import { axios } from '@/plugins/axios';
 
 export default {
+  head () {
+    return {
+      title: 'ログアウト',
+      meta: [
+        {
+          name: 'description',
+          content: 'ログアウトページです。'
+        },
+        {
+          name: 'keywords',
+          content: 'ログアウト, ログアウトページ'
+        }
+      ]
+    }
+  },
   middleware: 'redirect',
   methods: {
     async handleLogout() {
