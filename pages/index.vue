@@ -41,7 +41,6 @@
                 class="my-0 ml-0"
                 style="top: -10px;"
                 :tile="scrollY > 10"
-                :style="{ 'left': scrollY > 10 ? '-10px' : '0px' }"
               >
                 <v-icon left>mdi-playlist-check</v-icon>作成
                 <v-badge
@@ -49,7 +48,7 @@
                   v-if="albums.length"
                   :content="albums.length"
                 />
-              <SelectAlbums ref="selectAlbums" /> 
+              <SelectAlbums ref="selectAlbums" />
               </v-btn>
             <!-- </v-col> -->
             </template>
@@ -142,7 +141,6 @@ export default {
     }, 500),
     async getSearch() {
       if (this.query.length > 0) {
-
         const data = await axios.$get("/api/v1/search", {
           params: {
             query: this.query,
@@ -159,10 +157,6 @@ export default {
         return;
       };
     },
-    pushAlbums(album) {
-      if (this.albums.length < 5)
-        this.$store.dispatch("albums/addAlbums", album);
-    },
     removeAlbums(album) {
       this.$store.dispatch("albums/deleteAlbums", album);
     },
@@ -177,7 +171,7 @@ export default {
       this.scrollY = window.scrollY;
     },
     openSelectAlbums() {
-      this.$refs.selectAlbums.isDisplay = true
+      this.$refs.selectAlbums.isDialog = true
     },
   },
 };
@@ -191,7 +185,7 @@ export default {
 .fixed {
   /* 上部に固定する */
   position: fixed;
-  z-index: 9999;
+  z-index: 10;
   top: 7px;
 }
 </style>

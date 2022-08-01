@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="75vh" height="68vh"
-    v-model="isDisplay" 
-    v-if="isDisplay"
+    v-model="isDialog" 
+    v-if="isDialog"
     @click:outside="closeDialog"
     >
     <v-card height="50%" width="100%">
@@ -23,49 +23,52 @@
             cols="4"
           >
             <!-- アルバム画像の表示 -->
-            <v-img
-              :src="result.images[0].url"
-              :lazy-src="result.images[0].url"
-              :alt="result.name"
-              aspect-ratio="1"
-              class="my-0 rounded-0"
-              @click="openIframe(result)"
-            >
-              <!-- ローディング中の処理 -->
-              <template v-slot:placeholder>
-                <v-row
-                  class="fill-height ma-0"
-                  align="center"
-                  justify="center"
-                >
-                  <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-              <!-- 削除のためのチェックボックス -->
-              <div class="checkbox" v-if="isEdit">
-                <v-btn 
-                  fab
-                  x-small
-                  class="ml-1 mb-1"
+            <v-hover v-slot:default="{ hover }">
+              <v-img
+                :src="result.images[0].url"
+                :lazy-src="result.images[0].url"
+                :alt="result.name"
+                :class="{ 'pointer': hover }"
+                :style="{ 'cursor': hover ? 'pointer' : 'default' }"
+                aspect-ratio="1"
+                class="my-0 rounded-0"
+                @click="openAlbumIframe(result)"
+              >
+                <!-- ローディング中の処理 -->
+                <template v-slot:placeholder>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
                   >
-                  <v-checkbox 
-                    v-model="isChecked"
-                    :value="result"
-                    @change="checkboxChange"
-                    off-icon="mdi-delete"
-                    on-icon="mdi-delete"
-                    color="red"
-                    class="mt-6 ml-3  checkbox-btn"
-                  >
-                  </v-checkbox>
-                </v-btn>
-              </div>
-            </v-img>
+                    <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                    ></v-progress-circular>
+                  </v-row>
+                </template>
+                <!-- 削除のためのチェックボックス -->
+                <div class="checkbox" v-if="isEdit">
+                  <v-btn 
+                    fab
+                    x-small
+                    class="ml-1 mb-1"
+                    >
+                    <v-checkbox 
+                      v-model="checkedDeleteList"
+                      :value="result"
+                      off-icon="mdi-delete"
+                      on-icon="mdi-delete"
+                      color="red"
+                      class="mt-6 ml-3 checkbox-btn"
+                    >
+                    </v-checkbox>
+                  </v-btn>
+                </div>
+              </v-img>
+            </v-hover>
           </v-col>
-          <Iframe :isDisplay="iframe" :song="iframeTrack" @closeDialog="iframe = false" />
+          <Iframe :isIframe="iframe" :spotifyId="spotifyId" :embedType="embedType" @closeDialog="iframe = false, embedType=''" />
         </draggable>
 
         <!-- 選んだアルバムがない場合の表示 -->
@@ -95,7 +98,7 @@
               </p>
             </div>
           </v-row>
-          <v-row justify="center" align="center" class="mt-3 mb-1" v-show="!isEdit && !flashCreate">
+          <v-row justify="center" align="center" class="mt-3 mb-1" v-show="!isEdit && !flashCreate && results.length">
             <!-- sm以下であれば非表示、それ以外では表示 -->
             <div class="hidden-sm-and-down">
               <p class="caption mb-0 text--secondary ">
@@ -147,7 +150,8 @@
               class="text-sm-button mx-1"
               rounded
               outlined
-              @click="createAlbums"
+              :disabled="processing"
+              @click.prevent="createAlbums"
             >
               <v-icon >
                 mdi-check
@@ -210,6 +214,12 @@
         </v-card-actions>
       </v-container>
     </v-card>
+
+    <!-- 画像作成時のローディング処理 -->
+    <div>
+      <Loading v-if="isLoading" :loading="isLoading" />
+    </div>
+
   </v-dialog>
 </template>
 
@@ -217,26 +227,32 @@
 <script>
 import draggable from 'vuedraggable'
 import Iframe from '@/components/Iframe.vue'
+import Loading from "@/components/Loading.vue"
 
 export default {
   data() {
     return {
-      isDisplay: false,
+      isDialog: false,
       isEdit: false,
-      isChecked: [],
+      isLoading: false,
+      checkedDeleteList: [],
       flashDelete: false,
       flashCreate: false,
       iframe: false,
-      iframeTrack: '',
+      processing: false,
+      embedType: '',
+      spotifyId: '',
     };
   },
   components: {
     draggable,
     Iframe,
+    Loading
   },
   computed: {
     results: {
       get() {
+
         return this.$store.state.albums.albums;
       },
       set(val) {
@@ -245,84 +261,71 @@ export default {
     },
   },
   methods: {
-    openIframe(result) {
-      console.log("openIframe");
-      if (this.isEdit === false) {
+    openAlbumIframe({ id }) {
+      if (this.isEdit) return;
       this.iframe = true;
-      this.iframeTrack = result.id
-      
-      } else{
-        return;
-      }
+      this.embedType = 'album';
+      this.spotifyId = id
     },
     deleteCheckedAlbums() {
-      if (this.isChecked.length) {
-        this.isChecked.forEach(album => {
-          this.$store.dispatch("albums/deleteAlbums", album);
-        });
-        this.isChecked = [];
-        if (this.results.length === 0) {
-          this.isEdit = false;
-        }
-      } else {
+      if (!this.checkedDeleteList.length) {
         this.flashDelete = true;
-        setTimeout(() => {
-          this.flashDelete = false}
-          ,3000
-        );
+        return setTimeout(() => this.flashDelete = false, 3000 );
       }
-    },
-    checkboxChange() {
-      console.log(this.isChecked);
+
+      this.checkedDeleteList.forEach(album => {
+        this.$store.dispatch("albums/deleteAlbums", album);
+      });
+      this.checkedDeleteList = [];
+
+      // 全件削除した時に編集モードを解除する
+      if (this.results.length === 0) {
+        this.isEdit = false;
+      }
     },
     changeEdit() {
-      if (this.isEdit) {
-        this.isEdit = false;
-      } else {
-        this.isEdit = true;
-      }
+      this.isEdit = !this.isEdit;
     },
     closeDialog() {
-      console.log("closeDialog処理");
-      this.isDisplay = false;
-      if (this.isEdit) {
-        this.isEdit = false;
-      };
-      if (this.isChecked.length) {
-        this.isChecked = [];
-      };
+      this.isDialog = false;
+      this.isEdit = false;
+      this.checkedDeleteList = [];
     },
     async createAlbums() {
-      try {
-        // debounceで
-        if (this.results.length === 9) {
-        // ログイン中のユーザーか確認する
-          if (this.$store.state.login.user) {
-            // アルバムを作成する
-            await this.$axios.$post("api/v1/posts", {
-              album_ids: this.results.map(album => album.id),
-              image_paths: this.results.map(album => album.images[0].url),
-              hash_tag: "#私を構成する9枚"
-            }).then(response => {
-                window.localStorage.removeItem('albums');
-                this.$router.push(`/details/${response}`);
-            });
-          } else {
-            // ログインしていない場合はログイン画面にリダイレクト
-            this.$router.push({
-              name: "login",
-            });
-          };
-        } else {
-          this.flashCreate = true;
-          setTimeout(() => {
-            this.flashCreate = false}
-            ,3000
-          );
-        };
-      } catch (error) {
-        console.log(error);
+      // 多重タップを防ぐために処理中にする
+      if (this.proccessing) return;
+      this.processing = true;
+
+      if (this.results.length !== 9) {
+        this.flashCreate = true;
+        this.processing = false;
+        return setTimeout(() => this.flashCreate = false, 3000);
       }
+
+      // ログイン中のユーザーか確認する
+      if (!this.$store.state.login.user) return this.$router.push({ name: "login" });
+
+      // ローディングを表示する
+      this.isLoading = true;
+
+      try {
+        // アルバムを作成する
+        const response = await this.$axios.$post("api/v1/posts", {
+          album_ids: this.results.map(album => album.id),
+          image_paths: this.results.map(album => album.images[0].url),
+          hash_tag: "#私を構成する9枚"
+        })
+
+        // 処理中フラグを消す
+        this.processing = false;
+        // 作成に成功した場合はlocalStorageを空にする
+        window.localStorage.removeItem('albums');
+        // responseで取得したuuidのページに遷移する
+        this.$router.push(`/details/${response}`);
+      } catch (error) {
+        this.isLoading = false;
+        console.error(error);
+      }       
     },
   },
 };

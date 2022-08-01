@@ -46,15 +46,6 @@
             </v-list-item-content>
           </v-card>
         </v-row>
-      <!-- <v-layout align-center justify-center>
-        <v-flex xs12 sm8 md4 lg4>
-          <v-card class="elevation-1 pa-3">
-            <v-btn :href="twitterLoginURL">
-              Twitterログイン
-            </v-btn>
-          </v-card>
-        </v-flex>
-      </v-layout> -->
     </v-container>
   </v-main>
 <!-- </v-app> -->
