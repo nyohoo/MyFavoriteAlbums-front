@@ -161,4 +161,5 @@ export default {
 .color {
   background:linear-gradient(20deg, #191414, #1d8842);
 }
+
 </style>

@@ -6,7 +6,7 @@
     full-width
   >
     
-    <v-container fluid fill-height width="100%" style="background-color: rgba(255, 255, 255, 0.8);">
+    <v-container fluid fill-height width="100%" style="background-color: rgba(110, 159, 130, 0.9);">
       <v-container>
         <v-row class="mb-12" justify="center">
           <v-progress-circular
