@@ -4,11 +4,12 @@
       <v-card class="album-card rounded"
           >
         <!-- issue:hoverがつかない・・・ -->
-        <v-card 
-          tile 
-          flat
-        >
-          <v-hover v-slot:default="{ hover }">
+        <v-hover v-slot:default="{ hover }">
+          <v-card 
+            :class="hover ? 'songlist-transparent' : ''"
+            tile 
+            flat
+          >
             <v-img
               :src="result.images[0].url"
               :lazy-src="result.images[0].url"
@@ -33,8 +34,8 @@
                 </v-row>
               </template>
             </v-img>
-          </v-hover>
-        </v-card>
+          </v-card>
+        </v-hover>
         <v-card-text class="pt-3 pb-0">
           <v-hover v-slot:default="{ hover }">
             <p 
@@ -168,3 +169,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.songlist-transparent {
+  opacity: 0.75;
+  border-color: transparent !important;
+}
+</style>

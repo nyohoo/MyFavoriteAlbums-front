@@ -5,9 +5,13 @@
       <v-row algin="center" justify="center">
         <div align="left">
           <p class="text-h6">
-            <nuxt-link :to="`/users/${post.user.uid}`">
+            <v-hover v-slot:default="{ hover }">
+            <nuxt-link :to="`/users/${post.user.uid}`"
+            :style="{ 'color': hover ? '#00C853' : '#43A047' }"
+          >
               {{ post.user.name }}
             </nuxt-link>
+            </v-hover>
           </p>
         </div>
         <p class="text-h6" align="left">さんの</p>

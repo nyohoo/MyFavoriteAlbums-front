@@ -3,9 +3,6 @@ export let axios;
 export default ({ $axios, store, app }) => {
   $axios.onRequest(config => {
     const headers = store.state.login.auth
-    console.log("headers状態")
-    console.log(headers)
-    console.log("headers状態ここまで")
     config.headers = headers
   });
 
