@@ -1,31 +1,16 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list>
         <v-list>
           <v-list-item>
-            <v-btn
-              icon
-              @click.stop="miniVariant = !miniVariant"
-            >
+            <v-btn icon @click.stop="miniVariant = !miniVariant">
               <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
             </v-btn>
           </v-list-item>
         </v-list>
 
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -33,36 +18,45 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-
-        <v-list-item >
+        <v-list-item>
           <v-list-item-action>
             <v-switch v-model="theme" dense>
             </v-switch>
           </v-list-item-action>
-            <v-icon left>
+          <v-icon left>
             mdi-brightness-4
-            </v-icon>
+          </v-icon>
           <v-list-item-title>Light / Dark</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="currentUser">
+          <v-list-item-content>
+            <nuxt-link :to="`/users/${currentUser.uid}`">
+              <v-icon>mdi-account</v-icon>
+              <v-list-item-title>マイページ</v-list-item-title>
+            </nuxt-link>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <nuxt-link to="/list">
+              <v-icon>mdi-post</v-icon>
+              <v-list-item-title>>みんなの投稿</v-list-item-title>
+            </nuxt-link>
+          </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-      class="color"
-      dark
-    >
+    <v-app-bar :clipped-left="clipped" fixed app class="color" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-        <v-icon dense>mdi-pound</v-icon>
+      <v-icon dense>mdi-pound</v-icon>
       <!-- <v-btn
         icon
         @click.stop="fixed = !fixed"
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
-      
+
       <v-toolbar-title>
         <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
       </v-toolbar-title>
@@ -99,10 +93,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer> -->
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
+    <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
@@ -119,11 +110,12 @@ export default {
       }
     ]
   },
-  data () {
+  data() {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
+      currentUser: {},
       theme: this.$store.state.thema.theme,
       items: [
         {
@@ -148,6 +140,13 @@ export default {
       title: 'MyFavoriteAlbums'
     }
   },
+  beforeMount() {
+    if (!this.$store.state.login.user) {
+      this.currentUser = false
+    } else {
+      this.currentUser = this.$store.state.login.user
+    }
+  },
   watch: {
     theme() {
       this.$store.dispatch("thema/theme", this.theme);
@@ -159,7 +158,6 @@ export default {
 
 <style>
 .color {
-  background:linear-gradient(20deg, #191414, #1d8842);
+  background: linear-gradient(20deg, #191414, #1d8842);
 }
-
 </style>
