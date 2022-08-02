@@ -28,7 +28,7 @@
                 :src="result.images[0].url"
                 :lazy-src="result.images[0].url"
                 :alt="result.name"
-                :class="{ 'pointer': hover }"
+                :class="hover ? 'select-albums-transparent' : ''"
                 :style="{ 'cursor': hover ? 'pointer' : 'default' }"
                 aspect-ratio="1"
                 class="my-0 rounded-0"
@@ -342,4 +342,8 @@ export default {
   bottom: 0;
 }
 
+.select-albums-transparent {
+  opacity: 0.85;
+  border-color: transparent !important;
+}
 </style>
