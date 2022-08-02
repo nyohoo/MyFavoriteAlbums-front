@@ -137,17 +137,14 @@ export default {
       if (this.query.length > 0) {
         const data = await axios.$get("/api/v1/search", {
           params: {
-            query: this.query,
+            query: this.query
           },
         });
-        console.log(data);
-        this.results = data;
+        this.results.push(...data);
         this.isVisible = true;
       } else {
         this.results = [];
         this.isVisible = false;
-        console.log("文字列なし");
-        console.log(this.isVisible);
         return;
       };
     },
@@ -159,7 +156,6 @@ export default {
     },
     setSong(result) {
       this.song = `https://open.spotify.com/embed/album/${result.album.id}`;
-      console.log(this.song);
     },
     handleScroll() {
       this.scrollY = window.scrollY;
