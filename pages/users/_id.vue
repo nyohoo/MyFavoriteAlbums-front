@@ -7,9 +7,17 @@
           <v-avatar size="100px" class="mx-auto">
             <img :src="response.user.image" />
           </v-avatar>
-          <p class="text-h6 font-weight-bold">
-            {{ response.user.name }}さんの投稿一覧
-          </p>
+          <v-hover v-slot:default="{ hover }">
+            <p class="text-h6 font-weight-bold">
+              <a 
+                :href="`https://twitter.com/${response.user.nickname}`" 
+                :style="{ 'color': hover ? '#00C853' : '#43A047' }"
+              >
+              {{ response.user.name }}
+              </a>
+              さんの投稿一覧
+            </p>
+          </v-hover>
         </v-col>
       </v-row>
     </v-container>
@@ -20,16 +28,13 @@
           <div v-for="post in response.posts" :key="post.id">
             <!-- post内容表示のためのにカードで大枠 -->
             <v-hover v-slot:default="{ hover }">
-              <v-card class="mt-5 mb-9" 
-                hover rounded nuxt 
-                :href="`/details/${post.post_uuid}`"
-                :class="hover ? 'user-transparent' : ''"
-              >
+              <v-card class="mt-5 mb-9" hover rounded nuxt :href="`/details/${post.post_uuid}`"
+                :class="hover ? 'user-transparent' : ''">
                 <!-- postの画像表示のためカードで枠組み -->
                 <v-card tile flat>
                   <v-img :src="post.image_path" :lazy-src="post.image_path" aspect-ratio="1">
                     <!-- ローディング中の処理 -->ï
-                    <template v-slot:placïeholder>
+                    <template v-slot:placeholder>
                       <v-row class="fill-height ma-0" align="center" justify="center">
                         <v-progress-circular indeterminate color="primary"></v-progress-circular>
                       </v-row>
@@ -57,12 +62,12 @@ export default {
     const data = await axios.$get("/api/v1/users/" + context.params.id);
     return { response: data };
   },
-  // head() {
-  //   return {
-  //     // title: this.user.name + "さんの " + this.post.hash_tag,
-  //     titleTemplate: "",
-  //   };
-  // },
+  head() {
+    return {
+      title: this.response.user.name + "さんのマイページ",
+      titleTemplate: "",
+    };
+  },
 }
 </script>
 
