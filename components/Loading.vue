@@ -19,7 +19,7 @@
         </v-row>
         <v-row  justify="center">
           <div>
-            <p class="black--text text-h4 font-weight-bold">画像作成中です...</p>
+            <p class="black--text text-h4 font-weight-bold"><v-icon>mdi-robot</v-icon>画像作成中です...<v-icon>mdi-robot</v-icon></p>
           </div>
         </v-row>
         <v-row  justify="center">

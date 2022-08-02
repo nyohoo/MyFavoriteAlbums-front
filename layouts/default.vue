@@ -49,17 +49,18 @@
 
     <v-app-bar :clipped-left="clipped" fixed app class="color" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-icon dense>mdi-pound</v-icon>
+      
+      
       <!-- <v-btn
         icon
         @click.stop="fixed = !fixed"
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
-
-      <v-toolbar-title>
-        <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
-      </v-toolbar-title>
+        <v-toolbar-title v-show="isScroll">
+          <v-icon dense>mdi-pound</v-icon>
+          <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
+        </v-toolbar-title>
       <v-spacer />
       <!-- <v-btn
         icon
@@ -112,6 +113,8 @@ export default {
   },
   data() {
     return {
+      scrollY: 0,
+      isScroll: true,
       clipped: false,
       drawer: false,
       fixed: false,
@@ -147,12 +150,28 @@ export default {
       this.currentUser = this.$store.state.login.user
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
   watch: {
     theme() {
       this.$store.dispatch("thema/theme", this.theme);
       this.$vuetify.theme.dark = this.theme;
     },
+    scrollY() {
+      if (scrollY > 10) {
+        this.isScroll = false;
+      } else {
+        this.isScroll = true;
+      }
+    }
   },
+  methods: {
+    handleScroll() {
+      this.scrollY = window.scrollY;
+    },
+  }
+
 }
 </script>
 

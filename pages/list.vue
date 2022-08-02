@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       posts: [],
-      page: 1, //このpageの値によってpagenationされたJSONを取ってきます
+      page: 1, //pageの値によってpagenationされたJSONを取ってくる
     }
   },
   methods: {

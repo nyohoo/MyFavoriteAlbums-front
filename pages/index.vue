@@ -20,22 +20,23 @@
           ></v-select>
         </v-col> -->
           <v-col class="mr-2 py-0" cols="12" sm="8" md="8">
+            <!-- スクロールが閾値を超えるとdivが画面上部に移動する -->
+            <div :class="{ 'fixed' : isScroll }">
             <!-- 検索フォーム -->
             <v-text-field 
               prepend-inner-icon="mdi-magnify" 
               label="Artist, Album, Songs" 
               v-model="query"
-              :solo="scrollY > 10" 
+              :solo="isScroll" 
               @input="handleChange" 
               id="searchField" 
-              :class="{ 'fixed': scrollY > 10 }"
             >
               <template v-slot:append-outer>
                 <!-- <v-col class="mt-0 pt-0"
               cols="2" sm="2" md="2"
             > -->
-                <v-btn @click="openSelectAlbums" rounded large class="my-0 ml-0" style="top: -10px;"
-                  :tile="scrollY > 10">
+                <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;"
+                  :tile="isScroll" :width="isScroll ? '1%' : '90%'" large>
                   <v-icon left>mdi-playlist-check</v-icon>作成
                   <v-badge color="primary" v-if="albums.length" :content="albums.length" />
                   <SelectAlbums ref="selectAlbums" />
@@ -43,6 +44,7 @@
                 <!-- </v-col> -->
               </template>
             </v-text-field>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -58,6 +60,10 @@
           :result="result"
           class="d-flex child-flex" 
         />
+        
+        <infinite-loading @infinite="infiniteHandler">
+          <div slot="no-more" v-show="isInfinity">No more message</div>
+        </infinite-loading>
       </v-row>
     </v-container>
   </v-container>
@@ -103,8 +109,10 @@ export default {
       results: [],
       isVisible: false,
       scrollY: 0,
+      isScroll: false,
       dialog: false,
       song: '',
+      isInfinity: false,
 
       // select: { state: '#私を構成する9枚のアルバム', abbr: 'FL' },
       // items: [
@@ -129,24 +137,63 @@ export default {
     document.getElementById("searchField").focus();
     window.addEventListener('scroll', this.handleScroll);
   },
+  watch: {
+    scrollY() {
+      if (scrollY > 10) {
+        this.isScroll = true;
+      } else {
+        this.isScroll = false;
+      }
+    }
+  },
   methods: {
     handleChange: debounce(function () {
       this.getSearch();
-    }, 500),
+    }, 650),
     async getSearch() {
-      if (this.query.length > 0) {
-        const data = await axios.$get("/api/v1/search", {
-          params: {
-            query: this.query
-          },
-        });
-        this.results.push(...data);
-        this.isVisible = true;
-      } else {
+      // 検索クエリーがない場合はresultsを消してリターン
+      if (this.query.length === 0) {
         this.results = [];
         this.isVisible = false;
+        this.isInfinity = false;
         return;
-      };
+      }
+
+      if (this.isInfinity) {
+        this.results = [];
+        this.isInfinity = false;
+      }
+
+      const data = await axios.$get("/api/v1/search", {
+        params: {
+          query: this.query
+        },
+      });
+      this.results.push(...data);
+      this.isVisible = true;
+      this.isInfinity = true;
+    },
+    async infiniteHandler($state) {
+      try {
+        this.isInfinity = true;
+        const data = await await axios.$get("/api/v1/add_search", {
+          params: {
+            query: this.query,
+            count: this.results.length
+          },
+        })
+        //そのままだと読み込み時にカクつくので1500毎に読み込む
+        setTimeout(() => {
+          if (!data.no_result) {
+            this.results.push(...data)
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        }, 1500)
+      } catch (error) {
+        $state.complete()
+      }
     },
     removeAlbums(album) {
       this.$store.dispatch("albums/deleteAlbums", album);
@@ -178,5 +225,6 @@ export default {
   position: fixed;
   z-index: 10;
   top: 7px;
+  width: 38vh;
 }
 </style>

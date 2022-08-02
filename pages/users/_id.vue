@@ -22,6 +22,14 @@
       </v-row>
     </v-container>
 
+    <v-container>
+      <v-row justify="center">
+        <p class="headline" v-if="!posts">
+          9枚の画像を選んで作成すると、ここに表示されます。
+        </p>
+      </v-row>
+    </v-container>
+
     <v-container fill-height>
       <v-row justify="center">
         <v-col cols="12" sm="4" md="4">
