@@ -31,6 +31,7 @@ export default {
   plugins: [
     '@/plugins/axios',
     '@/plugins/cookie',
+    { src: '@/plugins/infiniteloading', ssr: false },
     { src: "@/plugins/localStorage", ssr: false },
   ],
 
