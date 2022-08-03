@@ -22,15 +22,16 @@
       </v-row>
     </v-container>
 
-    <v-container>
-      <v-row justify="center">
-        <p class="headline" v-if="!posts">
-          9枚の画像を選んで作成すると、ここに表示されます。
+    <v-container fill-height v-if="!posts">
+      <v-row justify="center" class="mt-16">
+        <p class="text-h6" >
+          9枚の画像を選んで作成すると
+          ここに表示されます。
         </p>
       </v-row>
     </v-container>
 
-    <v-container fill-height>
+    <v-container fill-height v-if="posts">
       <v-row justify="center">
         <v-col cols="12" sm="4" md="4">
           <div v-for="post in response.posts" :key="post.id">
@@ -67,7 +68,7 @@ import { axios } from "@/plugins/axios";
 
 export default {
   async asyncData(context) {
-    const data = await axios.$get("/api/v1/users/" + context.params.id);
+    const data = await axios.$get("api/v1/users/" + context.params.id);
     return { response: data };
   },
   head() {
