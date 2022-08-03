@@ -38,7 +38,7 @@ export default {
   middleware: 'redirect',
   methods: {
     async handleLogout() {
-      await axios.$delete('api/v1/auth/sign_out')
+      await axios.$delete('auth/sign_out')
       this.$cookies.removeAll()
       this.$store.commit('login/user', {})
       this.$store.commit('login/auth', null)

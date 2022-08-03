@@ -12,7 +12,7 @@ export default {
       'expiry': query.expiry,
     }
     store.commit('login/auth', authHeaders)
-    const { data } = await $axios.$get('api/v1/auth/validate_token')
+    const { data } = await $axios.$get('auth/validate_token')
     store.commit('login/user', data)
     const session = {
       tokens: authHeaders,

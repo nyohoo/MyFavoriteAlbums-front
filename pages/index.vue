@@ -164,7 +164,7 @@ export default {
         this.isInfinity = false;
       }
 
-      const data = await axios.$get("/api/v1/search", {
+      const data = await axios.$get("search", {
         params: {
           query: this.query
         },
@@ -176,7 +176,7 @@ export default {
     async infiniteHandler($state) {
       try {
         this.isInfinity = true;
-        const data = await await axios.$get("/api/v1/add_search", {
+        const data = await await axios.$get("add_search", {
           params: {
             query: this.query,
             count: this.results.length

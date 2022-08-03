@@ -28,7 +28,7 @@
                 :src="result.images[0].url"
                 :lazy-src="result.images[0].url"
                 :alt="result.name"
-                :class="hover ? 'select-albums-transparent' : ''"
+                :class="{ 'pointer': hover }"
                 :style="{ 'cursor': hover ? 'pointer' : 'default' }"
                 aspect-ratio="1"
                 class="my-0 rounded-0"
@@ -310,7 +310,7 @@ export default {
 
       try {
         // アルバムを作成する
-        const response = await this.$axios.$post("api/v1/posts", {
+        const response = await this.$axios.$post("posts", {
           album_ids: this.results.map(album => album.id),
           image_paths: this.results.map(album => album.images[0].url),
           hash_tag: "#私を構成する9枚"
@@ -342,8 +342,4 @@ export default {
   bottom: 0;
 }
 
-.select-albums-transparent {
-  opacity: 0.85;
-  border-color: transparent !important;
-}
 </style>

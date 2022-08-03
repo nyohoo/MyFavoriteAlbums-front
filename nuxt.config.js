@@ -1,9 +1,10 @@
+require('dotenv').config()
 import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Railsと被らないようにポート番号を設定
   server: {
-    port: 8080
+    port: process.env.PORT || 8080
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -55,8 +56,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    host: 'localhost', // APIドメイン
-    port: 3000,
+    baseURL: process.env.BASE_URL || 'http://localhost:3000/api/v1/'
    },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

@@ -68,7 +68,7 @@ import { axios } from "@/plugins/axios";
 
 export default {
   async asyncData(context) {
-    const data = await axios.$get("api/v1/users/" + context.params.id);
+    const data = await axios.$get("users/" + context.params.id);
     return { response: data };
   },
   head() {

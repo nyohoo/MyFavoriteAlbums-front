@@ -114,7 +114,7 @@ import Iframe from '@/components/Iframe.vue'
 
 export default {
   async asyncData(context) {
-    const data = await axios.$get("/api/v1/posts/" + context.params.id);
+    const data = await axios.$get("posts/" + context.params.id);
     return { post: data };
   },
   head() {
