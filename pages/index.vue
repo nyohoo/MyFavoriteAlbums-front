@@ -1,6 +1,5 @@
 <template>
   <v-container>
-
     <v-card color="#121212" flat tile>
       <v-container class="pt-7 pb-0">
         <v-row>
@@ -21,51 +20,38 @@
         </v-col> -->
           <v-col class="mr-2 py-0" cols="12" sm="8" md="8">
             <!-- スクロールが閾値を超えるとdivが画面上部に移動する -->
-            <div :class="{ 'fixed' : isScroll }">
-            <!-- 検索フォーム -->
-            <v-text-field 
-              type="text"
-              label="Artist, Album, Songs" 
-              v-model="query"
-              :solo="isScroll" 
-              @input="handleChange" 
-              id="searchField" 
-              append-icon="mdi-search"
-              @click:append="sendQuery"
-            >
-              <template v-slot:append>
-                <v-btn @click="sendQuery" rounded small outlined
-                  >
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-              </template>
-              <template v-slot:append-outer>
-                <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;"
-                  :tile="isScroll" :width="isScroll ? '1%' : '90%'" large>
-                  <v-icon left>mdi-playlist-check</v-icon>作成
-                  <v-badge color="primary" v-if="albums.length" :content="albums.length" />
-                  <SelectAlbums ref="selectAlbums" />
-                </v-btn>
-                <!-- </v-col> -->
-              </template>
-            </v-text-field>
+            <div :class="{ 'fixed': isScroll }">
+              <!-- 検索フォーム -->
+              <v-text-field type="text" label="Artist, Album, Songs" v-model="query" :solo="isScroll"
+                @input="handleChange" id="searchField" append-icon="mdi-search" @click:append="sendQuery">
+                <template v-slot:append>
+                  <v-btn @click="sendQuery" rounded small outlined>
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:append-outer>
+                  <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;" :tile="isScroll"
+                    :width="isScroll ? '1%' : '90%'" large>
+                    <v-icon left>mdi-playlist-check</v-icon>作成
+                    <v-badge color="primary" v-if="albums.length" :content="albums.length" />
+                  </v-btn>
+                  <!-- </v-col> -->
+                </template>
+              </v-text-field>
             </div>
           </v-col>
         </v-row>
       </v-container>
     </v-card>
 
+    <SelectAlbums ref="selectAlbums" />
+
     <!-- 検索結果の表示 -->
     <v-container>
       <v-row justify-center>
-        <SongList 
-          v-if="isVisible" 
-          v-for="result in results" 
-          :key="result.id" 
-          :result="result"
-          class="d-flex child-flex" 
-        />
-        
+        <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result"
+          class="d-flex child-flex" />
+
         <infinite-loading @infinite="infiniteHandler">
           <div slot="no-more" v-show="isInfinity">No more message</div>
         </infinite-loading>

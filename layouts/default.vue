@@ -28,9 +28,9 @@
           </v-icon>
           <v-list-item-title>Light / Dark</v-list-item-title>
         </v-list-item>
-        <v-list-item v-if="currentUser">
+        <v-list-item v-if="user">
           <v-list-item-content>
-            <nuxt-link :to="`/users/${currentUser.uid}`">
+            <nuxt-link :to="`/users/${user.uid}`">
               <v-icon>mdi-account</v-icon>
               <v-list-item-title>マイページ</v-list-item-title>
             </nuxt-link>
@@ -38,8 +38,8 @@
         </v-list-item>
         <v-list-item>
           <v-list-item-content>
-            <nuxt-link to="/list">
-              <v-icon>mdi-post</v-icon>
+            <nuxt-link :to="`/list`">
+              <v-icon>mdi-</v-icon>
               <v-list-item-title>>みんなの投稿</v-list-item-title>
             </nuxt-link>
           </v-list-item-content>
@@ -49,18 +49,17 @@
 
     <v-app-bar :clipped-left="clipped" fixed app class="color" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      
-      
+      <v-icon dense>mdi-pound</v-icon>
       <!-- <v-btn
         icon
         @click.stop="fixed = !fixed"
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
-        <v-toolbar-title v-show="isScroll">
-          <v-icon dense>mdi-pound</v-icon>
-          <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
-        </v-toolbar-title>
+
+      <v-toolbar-title>
+        <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
+      </v-toolbar-title>
       <v-spacer />
       <!-- <v-btn
         icon
@@ -113,8 +112,6 @@ export default {
   },
   data() {
     return {
-      scrollY: 0,
-      isScroll: true,
       clipped: false,
       drawer: false,
       fixed: false,
@@ -143,35 +140,18 @@ export default {
       title: 'MyFavoriteAlbums'
     }
   },
-  beforeMount() {
-    if (!this.$store.state.login.user) {
-      this.currentUser = false
-    } else {
-      this.currentUser = this.$store.state.login.user
+  computed: {
+    // ログイン中か確認する
+    user() {
+      return this.$store.state.login.user || ''
     }
-  },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll);
   },
   watch: {
     theme() {
       this.$store.dispatch("thema/theme", this.theme);
       this.$vuetify.theme.dark = this.theme;
     },
-    scrollY() {
-      if (scrollY > 10) {
-        this.isScroll = false;
-      } else {
-        this.isScroll = true;
-      }
-    }
   },
-  methods: {
-    handleScroll() {
-      this.scrollY = window.scrollY;
-    },
-  }
-
 }
 </script>
 
