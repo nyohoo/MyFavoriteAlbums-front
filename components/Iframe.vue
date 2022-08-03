@@ -9,7 +9,7 @@
     transition="fade-transition"
     content-class="elevation-0"
     @click:outside="closeDialog"
-    :overlay-opacity="`${isSongList ? 0.5 : 0.3}`"
+    :overlay-opacity="`${isSongList ? 0.7 : 0.58}`"
   >
     <!-- 閉じるボタン -->
     <v-card 
@@ -29,6 +29,16 @@
         >
           <v-icon color="red lighten-1">mdi-close-circle</v-icon>
         </v-btn>
+
+        
+        <v-spacer></v-spacer>
+        <span class="text-caption secondary rounded" style="color: rgba(27, 79, 45, 0.8); opacity: 0.97;" >
+          <v-icon x-small class="px-1">mdi-alert</v-icon>
+          音量注意
+          <v-icon x-small class="px-1">mdi-alert</v-icon>
+        </span>
+        
+        
       </v-card-actions>
     </v-card>
     <!-- /閉じるボタン -->
