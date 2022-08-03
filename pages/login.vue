@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       twitter: {
-        url: 'http://my-favorite-albums.herokuapp.com/api/v1/auth/twitter',
-        redirectUrl: 'http://localhost:8080/oauth/twitter/callback'
+        url: 'https://my-favorite-albums.herokuapp.com/api/v1/auth/twitter',
+        redirectUrl: 'https://localhost:8080/oauth/twitter/callback'
       },
     };
   },
