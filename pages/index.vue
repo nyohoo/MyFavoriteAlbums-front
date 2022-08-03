@@ -24,17 +24,22 @@
             <div :class="{ 'fixed' : isScroll }">
             <!-- 検索フォーム -->
             <v-text-field 
-              prepend-inner-icon="mdi-magnify" 
+              type="text"
               label="Artist, Album, Songs" 
               v-model="query"
               :solo="isScroll" 
               @input="handleChange" 
               id="searchField" 
+              append-icon="mdi-search"
+              @click:append="sendQuery"
             >
+              <template v-slot:append>
+                <v-btn @click="sendQuery" rounded small outlined
+                  >
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+              </template>
               <template v-slot:append-outer>
-                <!-- <v-col class="mt-0 pt-0"
-              cols="2" sm="2" md="2"
-            > -->
                 <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;"
                   :tile="isScroll" :width="isScroll ? '1%' : '90%'" large>
                   <v-icon left>mdi-playlist-check</v-icon>作成
@@ -210,6 +215,9 @@ export default {
     openSelectAlbums() {
       this.$refs.selectAlbums.isDialog = true
     },
+    sendQuery() {
+      this.handleChange();
+    }
   },
 };
 </script>
