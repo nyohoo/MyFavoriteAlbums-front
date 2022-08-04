@@ -69,7 +69,7 @@ export default {
     return {
       twitter: {
         url: process.env.BASE_URL + "auth/twitter",
-        redirectUrl: "http://localhost:8080/oauth/twitter/callback"
+        redirectUrl: process.env.CALL_BACK
       },
     };
   },
