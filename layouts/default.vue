@@ -1,105 +1,87 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
-      <v-list>
-        <v-list>
-          <v-list-item>
-            <v-btn icon @click.stop="miniVariant = !miniVariant">
-              <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-            </v-btn>
-          </v-list-item>
-        </v-list>
-
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-action>
-            <v-switch v-model="theme" dense>
-            </v-switch>
-          </v-list-item-action>
-          <v-icon left>
-            mdi-brightness-4
-          </v-icon>
-          <v-list-item-title>Light / Dark</v-list-item-title>
-        </v-list-item>
-        <v-list-item v-if="user">
-          <v-list-item-content>
-            <nuxt-link :to="`/users/${user.uid}`">
-              <v-icon>mdi-account</v-icon>
-              <v-list-item-title>マイページ</v-list-item-title>
-            </nuxt-link>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <nuxt-link :to="`/list`">
-              <v-icon>mdi-</v-icon>
-              <v-list-item-title>>みんなの投稿</v-list-item-title>
-            </nuxt-link>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar :clipped-left="clipped" fixed app class="color" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar fixed app class="color" dark>
       <v-icon dense>mdi-pound</v-icon>
-      <!-- <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn> -->
-
       <v-toolbar-title>
         <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
       </v-toolbar-title>
       <v-spacer />
-      <!-- <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn> -->
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" app bottom temporary right color="rgba(	29,136,66,0.5)">
+      <v-list>
+        <v-list-item :to="'/list'" router exact>
+          <v-list-item-action >
+            <v-icon>mdi-border-all</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'最近の投稿をみる'" />
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="'/'" router exact>
+          <v-list-item-action >
+            <v-icon>mdi-apps</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'投稿作成'" />
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="'/login'" router exact v-if="!islogin">
+          <v-list-item-action >
+            <v-icon>mdi-account-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'ログイン'" />
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="`/users/${user.uid}`" router exact v-else>
+          <v-list-item-action>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'マイページ'" />
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="'/'" router exact v-if="!islogin">
+          <v-list-item-action >
+            <v-icon>mdi-account-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'新規ユーザー登録'" />
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item :to="'/logout'" router exact v-else>
+          <v-list-item-action >
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'ログアウト'" />
+          </v-list-item-content>
+        </v-list-item>
+
+      </v-list>
+    </v-navigation-drawer>
+
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <!-- <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item >
-          <v-list-item-action>
-            <v-switch v-model="theme">
-
-            </v-switch>
-          </v-list-item-action>
-            <v-icon light>
-            mdi-brightness-4
-            </v-icon>
-          <v-list-item-title>Light / Dark</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer> -->
-    <v-footer :absolute="!fixed" app>
+    <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { title } from 'process';
+
 export default {
   name: 'DefaultLayout',
   head: {
@@ -112,38 +94,24 @@ export default {
   },
   data() {
     return {
-      clipped: false,
       drawer: false,
-      fixed: false,
-      currentUser: {},
+      user: [],
       theme: this.$store.state.thema.theme,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Top',
-          to: '/'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Login',
-          to: '/login'
-        },
-        {
-          icon: 'mdi-logout',
-          title: 'Logout',
-          to: '/logout'
-        }
-      ],
-      miniVariant: false,
-      rightDrawer: false,
-      right: true,
       title: 'MyFavoriteAlbums'
     }
   },
+  mounted() {
+    if (!this.$store.state.login.user) {
+      this.user = []
+      console.log(this.user)
+    } else {
+      this.user = this.$store.state.login.user
+      console.log(this.user)
+    }
+  },
   computed: {
-    // ログイン中か確認する
-    user() {
-      return this.$store.state.login.user || ''
+    islogin() {
+      return this.$store.state.login.user
     }
   },
   watch: {
@@ -151,6 +119,9 @@ export default {
       this.$store.dispatch("thema/theme", this.theme);
       this.$vuetify.theme.dark = this.theme;
     },
+    user() {
+      this.user = this.$store.state.login.user;
+    }
   },
 }
 </script>
