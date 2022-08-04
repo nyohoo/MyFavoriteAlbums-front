@@ -252,7 +252,6 @@ export default {
   computed: {
     results: {
       get() {
-
         return this.$store.state.albums.albums;
       },
       set(val) {
