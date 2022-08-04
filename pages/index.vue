@@ -211,7 +211,7 @@ export default {
   /* 上部に固定する */
   position: fixed;
   z-index: 10;
-  top: 44px;
+  top: 52px;
   width: 50vh;
   opacity: 0.95;
 }

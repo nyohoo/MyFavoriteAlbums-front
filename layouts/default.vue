@@ -9,7 +9,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app bottom temporary right color="rgba(	29,136,66,0.5)">
+    <v-navigation-drawer v-model="drawer" app bottom temporary right color="rgba(	29,136,66,0.9)">
       <v-list>
         <v-list-item :to="'/list'" router exact>
           <v-list-item-action >

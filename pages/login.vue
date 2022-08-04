@@ -52,6 +52,7 @@
 </template>
 
 <script>
+
 export default {
   head() {
     return {
@@ -67,9 +68,8 @@ export default {
   data() {
     return {
       twitter: {
-        url: process.env.BASE_URL + "/auth/twitter",
+        url: process.env.BASE_URL + "auth/twitter",
         redirectUrl: process.env.CALL_BACK
-        
       },
     };
   },
