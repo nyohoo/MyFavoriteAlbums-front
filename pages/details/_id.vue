@@ -1,16 +1,14 @@
 <template>
-  <v-container >
-    <v-container mt-6 mb-13>
+  <v-container>
+    <v-container mt-6 mb-8>
       <!-- （ユーザー名）の（ハッシュタグ名）の形でヘッドタイトル作成-->
       <v-row algin="center" justify="center">
         <div align="left">
           <p class="text-h6">
             <v-hover v-slot:default="{ hover }">
-            <nuxt-link :to="`/users/${post.user.uid}`"
-            :style="{ 'color': hover ? '#00C853' : '#43A047' }"
-          >
-              {{ post.user.name }}
-            </nuxt-link>
+              <nuxt-link :to="`/users/${post.user.uid}`" :style="{ 'color': hover ? '#00C853' : '#43A047' }">
+                {{ post.user.name }}
+              </nuxt-link>
             </v-hover>
           </p>
         </div>
@@ -22,36 +20,48 @@
       <!-- spotifyのアルバム情報から9枚を描画し、メインイメージとして表示 -->
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
-        <v-card justify="center">
-          <v-container>
-            <v-row>
-              <v-col v-for="album in post.albums" :key="album.id" class="d-flex child-flex ma-0 pa-0" cols="4">
-                <v-hover v-slot:default="{ hover }">
-                  <!-- アルバム画像の表示 -->
-                  <v-card :class="hover ? 'detail-transparent' : ''" tile flat class="mx-auto">
-                    <v-img :src="album.images[0].url" :lazy-src="album.images[0].url" :alt="album.name" aspect-ratio="1"
-                      class="my-0 rounded-0" :style="{ 'cursor': hover ? 'pointer' : 'default' }"
-                      @click="openAlbumIframe(album)">
-                      <!-- ローディング中の処理 -->
-                      <template v-slot:placeholder>
-                        <v-row class="fill-height ma-0" align="center" justify="center">
-                          <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                        </v-row>
-                      </template>
-                    </v-img>
-                  </v-card>
-                </v-hover>
-              </v-col>
-              <!-- iframeの呼び出し -->
-              <Iframe :isIframe="iframe" :spotifyId="spotifyId" :embedType="embedType"
-                @closeDialog="iframe = false, embedType = ''" />
-            </v-row>
-          </v-container>
-        </v-card>
+          <v-card justify="center">
+            <v-container>
+              <v-row>
+                <v-col v-for="album in post.albums" :key="album.id" class="d-flex child-flex ma-0 pa-0" cols="4">
+                  <v-hover v-slot:default="{ hover }">
+                    <!-- アルバム画像の表示 -->
+                    <v-card :class="hover ? 'detail-transparent' : ''" tile flat class="mx-auto">
+                      <v-img :src="album.images[0].url" :lazy-src="album.images[0].url" :alt="album.name"
+                        aspect-ratio="1" class="my-0 rounded-0" :style="{ 'cursor': hover ? 'pointer' : 'default' }"
+                        @click="openAlbumIframe(album)">
+                        <!-- ローディング中の処理 -->
+                        <template v-slot:placeholder>
+                          <v-row class="fill-height ma-0" align="center" justify="center">
+                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                          </v-row>
+                        </template>
+                      </v-img>
+                    </v-card>
+                  </v-hover>
+                </v-col>
+                <!-- iframeの呼び出し -->
+                <Iframe :isIframe="iframe" :spotifyId="spotifyId" :embedType="embedType"
+                  @closeDialog="iframe = false, embedType = ''" />
+              </v-row>
+            </v-container>
+          </v-card>
+
+          <v-col class="d-flex justify-center pt-5" v-if="post.user.uid === user.uid">
+            <!-- Twitter共有ボタン -->
+            <v-btn class="mx-2" color="blue darken-1" style="text-transform: none;" rounded @click="shareTwitter(user)">
+              <v-icon>mdi-twitter</v-icon>
+            </v-btn>
+            <!-- 投稿削除ボタン -->
+            <v-btn class="mx-2" color="red darken-1" style="text-transform: none;" rounded @click="openConfirm">
+              <v-icon>mdi-trash-can</v-icon>
+            </v-btn>
+            <ConfirmDialog :isConfirmDialog="isConfirmDialog" :post_uuid="post.uuid" @closeDialog="isConfirmDialog = false" />
+          </v-col>
+          <div v-else class="pt-10"></div>
         </v-col>
       </v-row>
     </v-container>
-
 
     <v-container justify="center" pa-0 pl-1>
       <v-row justify="center">
@@ -112,6 +122,8 @@
 import { axios } from "@/plugins/axios";
 import Iframe from '@/components/Iframe.vue'
 
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
+
 export default {
   async asyncData(context) {
     const data = await axios.$get("posts/" + context.params.id);
@@ -125,6 +137,8 @@ export default {
   },
   components: {
     Iframe,
+    
+    ConfirmDialog
   },
   data() {
     return {
@@ -133,7 +147,13 @@ export default {
       detail: false,
       embedType: "",
       spotifyId: "",
+      isConfirmDialog: false,
     };
+  },
+  computed: {
+    user() {
+      return this.$store.state.login.user;
+    },
   },
   methods: {
     openAlbumIframe({ id }) {
@@ -148,6 +168,30 @@ export default {
       this.embedType = "artist";
       this.spotifyId = album.artists[0].id;
     },
+    isLoginUserPost() {
+      if (this.post.user.uid === this.$store.state.login.user.uid) {
+        return true;
+      } else {
+        return false;
+      };
+    },
+    openConfirm() {
+      this.isConfirmDialog = true;
+    },
+    async shareTwitter(user) {
+      // tweets/createアクションに投稿内容を送信
+      try {
+        console.log(this.post.uuid);
+      const data = await axios.$post("tweets", {
+        post_uuid: this.post.uuid,
+        text: "テスト投稿です！",
+        url: window.location.href,
+      })
+      console.log(data);
+      } catch (error) {
+        console.log(error);
+      } 
+    },
   },
 };
 </script>
@@ -160,13 +204,13 @@ export default {
 
 #songlink {
   width: 105%;
-  height: 35px;
+  height: 43px;
   overflow: hidden;
 }
 
 #songlink iframe {
   width: 116%;
-  height: 35px;
+  height: 43px;
   margin-left: -56px;
 }
 
