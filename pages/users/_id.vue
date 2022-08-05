@@ -42,7 +42,7 @@
                 <!-- postの画像表示のためカードで枠組み -->
                 <v-card tile flat>
                   <v-img :src="post.image_path" :lazy-src="post.image_path" aspect-ratio="1">
-                    <!-- ローディング中の処理 -->ï
+                    <!-- ローディング中の処理 -->
                     <template v-slot:placeholder>
                       <v-row class="fill-height ma-0" align="center" justify="center">
                         <v-progress-circular indeterminate color="primary"></v-progress-circular>
