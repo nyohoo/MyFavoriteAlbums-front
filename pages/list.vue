@@ -63,7 +63,7 @@ export default {
     // 無限スクロールで5件ずつ取得
     async infiniteHandler($state) {
       try {
-        const data = await axios.$get("/api/v1/posts/lists", {
+        const data = await axios.$get("posts/lists", {
           params: {
             page: this.page,
           },

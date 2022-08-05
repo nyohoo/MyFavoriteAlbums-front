@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container >
     <v-container mt-6 mb-13>
       <!-- （ユーザー名）の（ハッシュタグ名）の形でヘッドタイトル作成-->
       <v-row algin="center" justify="center">
@@ -53,13 +53,13 @@
     </v-container>
 
 
-    <v-container justify="center">
+    <v-container justify="center" pa-0 pl-1>
       <v-row justify="center">
         <v-col cols="12" sm="6" justify="center">
           <v-list nav rounded>
             <template v-for="(album, index) in post.albums">
               <v-list-item dense>
-                <v-list-item-avatar tile height="40%" width="40%" class="mr-2">
+                <v-list-item-avatar tile height="42%" width="42%" class="ml-0 pl-0">
                   <v-hover v-slot:default="{ hover }">
                     <v-card :class="hover ? 'detail-transparent' : ''" flat tile>
                       <v-img :src="album.images[0].url" :class="{ 'pointer': hover }"
@@ -89,7 +89,7 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-row class="ml-4 mt-1 mb-1 mr-0">
+              <v-row class="pl-4 mt-1 mb-1 mr-0 ">
                 <div id="songlink">
                   <iframe :src="`https://embed.odesli.co/?url=spotify:album:${album.id}&theme=dark`" frameborder="0"
                     allowtransparency allowfullscreen
@@ -114,7 +114,7 @@ import Iframe from '@/components/Iframe.vue'
 
 export default {
   async asyncData(context) {
-    const data = await axios.$get("/api/v1/posts/" + context.params.id);
+    const data = await axios.$get("posts/" + context.params.id);
     return { post: data };
   },
   head() {
@@ -165,9 +165,9 @@ export default {
 }
 
 #songlink iframe {
-  width: 105%;
+  width: 116%;
   height: 35px;
-  margin-left: -50px;
+  margin-left: -56px;
 }
 
 .detail-transparent {

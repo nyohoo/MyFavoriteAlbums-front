@@ -1,66 +1,50 @@
 <template>
   <v-container>
+    <!-- スクロールが閾値を超えると検索・作成ボタンがスクロール追従するクラスを付与 -->
+    <v-col cols="12" sm="8" md="8" :class="[isScroll ? 'fixed' : '']">
 
-    <v-card color="#121212" flat tile>
-      <v-container class="pt-7 pb-0">
-        <v-row>
-          <!-- ハッシュタグの選択機能は一旦保留 -->
-          <!-- <v-col cols="2" sm="8"  class="mr-4">
-          <v-select
-            v-model="select"
-            :hint="`${select.state}`"
-            :items="items"
-            item-text="state"
-            item-value="abbr"
-            label="Select"
-            persistent-hint
-            return-object
-            single-line
-            dense
-          ></v-select>
-        </v-col> -->
-          <v-col class="mr-2 py-0" cols="12" sm="8" md="8">
-            <!-- スクロールが閾値を超えるとdivが画面上部に移動する -->
-            <div :class="{ 'fixed' : isScroll }">
-            <!-- 検索フォーム -->
-            <v-text-field 
-              prepend-inner-icon="mdi-magnify" 
-              label="Artist, Album, Songs" 
-              v-model="query"
-              :solo="isScroll" 
-              @input="handleChange" 
-              id="searchField" 
-            >
-              <template v-slot:append-outer>
-                <!-- <v-col class="mt-0 pt-0"
-              cols="2" sm="2" md="2"
-            > -->
-                <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;"
-                  :tile="isScroll" :width="isScroll ? '1%' : '90%'" large>
-                  <v-icon left>mdi-playlist-check</v-icon>作成
-                  <v-badge color="primary" v-if="albums.length" :content="albums.length" />
-                  <SelectAlbums ref="selectAlbums" />
-                </v-btn>
-                <!-- </v-col> -->
-              </template>
-            </v-text-field>
-            </div>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
+      <!-- ハッシュタグの選択機能は一旦保留 -->
+      <!-- <v-col cols="2" sm="8"  class="mr-4">
+    <v-select
+      v-model="select"
+      :hint="`${select.state}`"
+      :items="items"
+      item-text="state"
+      item-value="abbr"
+      label="Select"
+      persistent-hint
+      return-object
+      single-line
+      dense
+    ></v-select>
+      v-col> -->
+
+      
+
+      <!-- 検索フォーム -->
+      <v-text-field type="text" label="Artist, Album, Songs" v-model="query" :solo="isScroll" @input="handleChange"
+        id="searchField" append-icon="mdi-search" @click:append="sendQuery">
+        <template v-slot:append-outer>
+          <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;" :tile="isScroll"
+            :width="isScroll ? '1%' : '90%'" large>
+            <v-icon left>mdi-playlist-check</v-icon>作成
+            <v-badge color="primary" v-if="albums.length" :content="albums.length" />
+          </v-btn>
+          <!-- </v-col> -->
+        </template>
+      </v-text-field>
+    </v-col>
+
+
+
+    <SelectAlbums ref="selectAlbums" />
 
     <!-- 検索結果の表示 -->
     <v-container>
       <v-row justify-center>
-        <SongList 
-          v-if="isVisible" 
-          v-for="result in results" 
-          :key="result.id" 
-          :result="result"
-          class="d-flex child-flex" 
-        />
-        
+        <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result"
+          class="d-flex child-flex" />
+
         <infinite-loading @infinite="infiniteHandler">
           <div slot="no-more" v-show="isInfinity">No more message</div>
         </infinite-loading>
@@ -164,7 +148,7 @@ export default {
         this.isInfinity = false;
       }
 
-      const data = await axios.$get("/api/v1/search", {
+      const data = await axios.$get("search", {
         params: {
           query: this.query
         },
@@ -176,7 +160,7 @@ export default {
     async infiniteHandler($state) {
       try {
         this.isInfinity = true;
-        const data = await await axios.$get("/api/v1/add_search", {
+        const data = await await axios.$get("add_search", {
           params: {
             query: this.query,
             count: this.results.length
@@ -210,6 +194,9 @@ export default {
     openSelectAlbums() {
       this.$refs.selectAlbums.isDialog = true
     },
+    sendQuery() {
+      this.handleChange();
+    }
   },
 };
 </script>
@@ -224,7 +211,8 @@ export default {
   /* 上部に固定する */
   position: fixed;
   z-index: 10;
-  top: 7px;
-  width: 38vh;
+  top: 52px;
+  width: 50vh;
+  opacity: 0.95;
 }
 </style>
