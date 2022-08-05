@@ -19,8 +19,6 @@
     ></v-select>
       v-col> -->
 
-      
-
       <!-- 検索フォーム -->
       <v-text-field type="text" label="Artist, Album, Songs" v-model="query" :solo="isScroll" @input="handleChange"
         id="searchField" append-icon="mdi-search" @click:append="sendQuery">
@@ -30,12 +28,9 @@
             <v-icon left>mdi-playlist-check</v-icon>作成
             <v-badge color="primary" v-if="albums.length" :content="albums.length" />
           </v-btn>
-          <!-- </v-col> -->
         </template>
       </v-text-field>
     </v-col>
-
-
 
     <SelectAlbums ref="selectAlbums" />
 
@@ -45,6 +40,7 @@
         <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result"
           class="d-flex child-flex" />
 
+        <!-- 無限スクロール -->
         <infinite-loading @infinite="infiniteHandler">
           <div slot="no-more" v-show="isInfinity">No more message</div>
         </infinite-loading>
@@ -53,12 +49,12 @@
   </v-container>
 </template>
 
-
 <script>
 import { axios } from '@/plugins/axios';
 import SongList from '@/components/SongList';
 import SelectAlbums from '@/components/SelectAlbums';
 
+// 検索の結果をデバウンスするための変数
 const debounce = (func, wait = 500) => {
   var timerId;
   return function (...args) {
