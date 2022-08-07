@@ -59,7 +59,7 @@
             <v-btn class="mx-2" width="80px" color="red darken-1" style="text-transform: none;" rounded @click="openConfirm">
               <v-icon>mdi-trash-can</v-icon>
             </v-btn>
-            <ConfirmDialog :isConfirmDialog="isConfirmDialog" :post_uuid="post.uuid" @closeDialog="isConfirmDialog = false" />
+            <ConfirmDialog :isConfirmDialog="isConfirmDialog" :postUuid="post.post_uuid" @closeDialog="isConfirmDialog = false" />
           </v-col>
           <div v-else class="pt-10"></div>
         </v-col>
