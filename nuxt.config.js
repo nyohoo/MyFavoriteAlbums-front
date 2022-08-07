@@ -76,7 +76,7 @@ export default {
             primary: "#1DB954",
             secondary: "#8bc34a",
             accent: "#cddc39",
-            error: "#ffeb3b",
+            error: "#E53935",
             warning: "#ffc107",
             info: colors.blue.darken1,
             success: "#795548"
