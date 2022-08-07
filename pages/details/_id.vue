@@ -47,13 +47,16 @@
             </v-container>
           </v-card>
 
+          <!-- ログイン中の場合はツイートボタンと削除ボタンを表示する -->
           <v-col class="d-flex justify-center pt-5" v-if="post.user.uid === user.uid">
             <!-- Twitter共有ボタン -->
-            <v-btn class="mx-2" color="blue darken-1" style="text-transform: none;" rounded @click="shareTwitter(user)">
+            <v-btn class="mx-2" width="80px" color="blue darken-1" style="text-transform: none;" rounded @click="openTwitterCard">
               <v-icon>mdi-twitter</v-icon>
             </v-btn>
+            <TwitterShare :isTwitterCardDialog="isTwitterCardDialog" :post="post" @resetForm="isTwitterCardDialog = false" />
+            
             <!-- 投稿削除ボタン -->
-            <v-btn class="mx-2" color="red darken-1" style="text-transform: none;" rounded @click="openConfirm">
+            <v-btn class="mx-2" width="80px" color="red darken-1" style="text-transform: none;" rounded @click="openConfirm">
               <v-icon>mdi-trash-can</v-icon>
             </v-btn>
             <ConfirmDialog :isConfirmDialog="isConfirmDialog" :post_uuid="post.uuid" @closeDialog="isConfirmDialog = false" />
@@ -112,8 +115,6 @@
           </v-list>
         </v-col>
       </v-row>
-
-
     </v-container>
   </v-container>
 </template>
@@ -123,6 +124,7 @@ import { axios } from "@/plugins/axios";
 import Iframe from '@/components/Iframe.vue'
 
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import TwitterShare from "../../components/TwitterShare.vue";
 
 export default {
   async asyncData(context) {
@@ -137,9 +139,9 @@ export default {
   },
   components: {
     Iframe,
-    
-    ConfirmDialog
-  },
+    ConfirmDialog,
+    TwitterShare
+},
   data() {
     return {
       // loading: true,
@@ -148,6 +150,7 @@ export default {
       embedType: "",
       spotifyId: "",
       isConfirmDialog: false,
+      isTwitterCardDialog: false,
     };
   },
   computed: {
@@ -178,20 +181,24 @@ export default {
     openConfirm() {
       this.isConfirmDialog = true;
     },
-    async shareTwitter(user) {
-      // tweets/createアクションに投稿内容を送信
-      try {
-        console.log(this.post.uuid);
+    openTwitterCard() {
+      this.isTwitterCardDialog = true;
+    },
+    async sendTweetBody() {
+    // tweets/createアクションに投稿内容を送信
+    try {
+      console.log(this.post.uuid);
       const data = await axios.$post("tweets", {
-        post_uuid: this.post.uuid,
+        post_uuid: this.post.post_uuid,
         text: "テスト投稿です！",
         url: window.location.href,
       })
       console.log(data);
-      } catch (error) {
-        console.log(error);
-      } 
+    } catch (error) {
+      console.log(error);
+    }
     },
+
   },
 };
 </script>
