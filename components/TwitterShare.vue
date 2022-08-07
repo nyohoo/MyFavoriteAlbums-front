@@ -32,8 +32,8 @@
       <v-card-text class="mt-1">
         <v-container>
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-textarea v-model="tweetBody" :counter="117" label="本文" persistent-hint
-              persistent-placeholder row="4" required hint="ツイート末尾にURLが入ります" :rules="[rules.max]" />
+            <v-textarea v-model="tweetBody" :counter="117" label="本文" persistent-hint autofocus
+              persistent-placeholder row="4" required hint="このページへのURLが末尾に入ります。" :rules="[rules.max]" />
           </v-form>
         </v-container>
       </v-card-text>
@@ -104,7 +104,7 @@ export default {
       }
     },
     setForm() {
-      this.tweetBody = "#MyFavoriteAlbums" + " " + "で" + "\n" + this.post.hash_tag + " " + "を作ってみたよ！" + "\n" + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+      this.tweetBody = this.post.hash_tag + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
     },
     resetForm() {
       this.$emit('resetForm');
