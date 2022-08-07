@@ -11,7 +11,7 @@
 
     <v-navigation-drawer v-model="drawer" app bottom temporary right color="rgba(	29,136,66,0.9)">
       <v-list>
-        <v-list-item :to="'/list'" router exact>
+        <v-list-item :to="'/list'" nuxt exact>
           <v-list-item-action >
             <v-icon>mdi-border-all</v-icon>
           </v-list-item-action>
@@ -20,7 +20,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="'/'" router exact>
+        <v-list-item :to="'/'" nuxt exact>
           <v-list-item-action >
             <v-icon>mdi-apps</v-icon>
           </v-list-item-action>
@@ -29,7 +29,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="'/login'" router exact v-if="!islogin">
+        <v-list-item :to="'/login'" nuxt exact v-if="!islogin">
           <v-list-item-action >
             <v-icon>mdi-account-plus</v-icon>
           </v-list-item-action>
@@ -38,7 +38,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="`/users/${user.uid}`" router exact v-else>
+        <v-list-item :to="`/users/${user.uid}`" nuxt exact v-else>
           <v-list-item-action>
             <v-icon>mdi-account</v-icon>
           </v-list-item-action>
@@ -47,7 +47,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="'/'" router exact v-if="!islogin">
+        <v-list-item :to="'/login'" nuxt exact v-if="!islogin">
           <v-list-item-action >
             <v-icon>mdi-account-plus</v-icon>
           </v-list-item-action>
@@ -56,7 +56,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="'/logout'" router exact v-else>
+        <v-list-item :to="'/logout'" nuxt DEexact v-else>
           <v-list-item-action >
             <v-icon>mdi-logout</v-icon>
           </v-list-item-action>
@@ -80,8 +80,6 @@
 </template>
 
 <script>
-import { title } from 'process';
-
 export default {
   name: 'DefaultLayout',
   head: {
