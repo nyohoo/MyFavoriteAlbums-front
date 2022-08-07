@@ -20,6 +20,11 @@
 import { axios } from '@/plugins/axios';
 
 export default {
+  middleware({ store, redirect }) {
+    if (!store.state.login.user) {
+      redirect('/login');
+    }
+  },
   head() {
     return {
       title: 'ログアウト',
@@ -35,7 +40,6 @@ export default {
       ]
     }
   },
-  middleware: 'redirect',
   methods: {
     async handleLogout() {
       await axios.$delete('auth/sign_out')
