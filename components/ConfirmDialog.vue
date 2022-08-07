@@ -1,11 +1,12 @@
 <template>
   <!-- 削除確認のモーダル -->
-  <v-dialog v-model="isConfirmDialog" persistent max-width="330px">
+  <v-dialog v-model="isConfirmDialog" @click:outside="closeDialog" max-width="330px">
     <div class="text-center">
-      <v-sheet
+      <v-card
         class="px-7 pt-7 pb-4 mx-auto text-center d-inline-block"
-        color="blue-grey darken-3"
+        color="green-grey darken-3"
         dark
+        
       >
         <div class="grey--text text--lighten-1 text-body-2 mb-4">
           投稿を削除します。よろしいですか？
@@ -28,7 +29,7 @@
         >
           削除
         </v-btn>
-      </v-sheet>
+      </v-card>
     </div>
   </v-dialog>
 </template>
