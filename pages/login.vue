@@ -1,9 +1,7 @@
 <template>
-<!-- <v-app id="login"> -->
-  <v-main>
     <v-container fluid fill-height>
       <!-- ログイン時にnameを表示する -->
-        <v-card class="d-flex flex-column mx-auto my-6 flat" width="50%">
+        <v-card class="d-flex flex-column mx-auto my-6 flat" width="50vh">
           <v-card-title class="d-flex justify-center pa-0 mt-6"
             >ログイン</v-card-title
           >
@@ -47,8 +45,6 @@
           </v-card>
         </v-row>
     </v-container>
-  </v-main>
-<!-- </v-app> -->
 </template>
 
 <script>
