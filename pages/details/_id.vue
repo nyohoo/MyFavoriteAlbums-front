@@ -155,7 +155,8 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.state.login.user;
+      // ユーザー情報がない場合は空で返す
+      return this.$store.state.user || {};
     },
   },
   methods: {
