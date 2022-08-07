@@ -12,7 +12,6 @@ export default {
       'expiry': query.expiry,
     }
     store.commit('login/auth', authHeaders)
-    console.log("ログイン処理中")
     const { data } = await $axios.$get('auth/validate_token')
     store.commit('login/user', data)
     const session = {
