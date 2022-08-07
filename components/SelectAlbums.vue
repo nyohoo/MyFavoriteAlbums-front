@@ -217,7 +217,7 @@
 
     <!-- 画像作成時のローディング処理 -->
     <div>
-      <Loading v-if="isLoading" :loading="isLoading" />
+      <Loading v-if="isLoading" :loading="isLoading" :isCreatePost="isCreatePostLoading" />
     </div>
 
   </v-dialog>
@@ -235,6 +235,7 @@ export default {
       isDialog: false,
       isEdit: false,
       isLoading: false,
+      isCreatePostLoading: false,
       checkedDeleteList: [],
       flashDelete: false,
       flashCreate: false,
@@ -306,6 +307,7 @@ export default {
 
       // ローディングを表示する
       this.isLoading = true;
+      this.isCreatePostLoading = true;
 
       try {
         // アルバムを作成する
@@ -323,6 +325,7 @@ export default {
         this.$router.push(`/details/${response}`);
       } catch (error) {
         this.isLoading = false;
+        this.isCreatePostLoading = false;
         console.error(error);
       }       
     },
