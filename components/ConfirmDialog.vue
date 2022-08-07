@@ -26,8 +26,25 @@
           color="error"
           plain
           @click="removePost"
+          v-if="!isLoading"
         >
+        削除
+        </v-btn>
+        <v-btn
+          class="ma-1"
+          color="error"
+          plain
+          @click="removePost"
+          disabled
+          v-if="isLoading"
+        >
+          <v-progress-circular
+            indeterminate
+            color="green lighten-3"
+            
+          >
           削除
+          </v-progress-circular>
         </v-btn>
       </v-card>
     </div>
@@ -38,24 +55,35 @@
 import { axios } from "@/plugins/axios";
 
 export default {
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   props: {
     isConfirmDialog: {
       type: Boolean,
       default: false,
     },
-    post_uuid: {
+    postUuid: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   methods: {
-    removePost() {
+    async removePost() {
+        this.isLoading = true;
       try {
-        console.log(this.post_uuid);
-        axios.$delete("posts/" + this.post_uuid);
+        await axios.$delete("posts", {
+          params: {
+            uuid: this.postUuid,
+          },
+        });
+        this.isLoading = false;
         this.$router.push("/");
         // issue:削除完了メッセージを表示する
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
       }
     },
