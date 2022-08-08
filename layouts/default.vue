@@ -47,16 +47,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="'/login'" nuxt exact v-if="!islogin">
-          <v-list-item-action >
-            <v-icon>mdi-account-plus</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="'新規ユーザー登録'" />
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item :to="'/logout'" nuxt DEexact v-else>
+        <v-list-item :to="'/logout'" nuxt exact v-if="islogin">
           <v-list-item-action >
             <v-icon>mdi-logout</v-icon>
           </v-list-item-action>
@@ -64,7 +55,25 @@
             <v-list-item-title v-text="'ログアウト'" />
           </v-list-item-content>
         </v-list-item>
+      </v-list>
 
+      <!-- fix:ナビバーの下部に表示させる -->
+      
+      <v-divider />
+      
+      <v-list >
+        <!-- 利用規約 -->
+        <v-list-item :to="'/terms'" nuxt  dense>
+          <v-list-item-content>
+            <v-list-item-title v-text="'利用規約'" />
+          </v-list-item-content>
+        </v-list-item>
+        <!-- プライバシーポリシー -->
+        <v-list-item :to="'/privacy'" nuxt  dense>
+          <v-list-item-content>
+            <v-list-item-title v-text="'プライバシーポリシー'" />
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
