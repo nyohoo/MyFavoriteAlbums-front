@@ -108,7 +108,7 @@ opacity:0.3;
 
 .fadeIn-Btn {
   animation-name:fadeInAnime;
-  animation-duration:1.9s;
+  animation-duration:1s;
   animation-fill-mode:forwards;
   opacity:0.4;
 }
