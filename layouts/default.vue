@@ -1,8 +1,8 @@
 <template>
   <v-app dark>
     <v-app-bar fixed app class="color" dark>
-      <v-icon dense>mdi-pound</v-icon>
-      <v-toolbar-title>
+      <v-toolbar-title @click="jumpHome">
+        <v-icon class="pb-1">mdi-pound</v-icon>
         <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
       </v-toolbar-title>
       <v-spacer />
@@ -130,6 +130,11 @@ export default {
       this.user = this.$store.state.login.user;
     }
   },
+  methods: {
+    jumpHome() {
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
