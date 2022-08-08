@@ -56,7 +56,7 @@ import SongList from '@/components/SongList';
 import SelectAlbums from '@/components/SelectAlbums';
 
 // 検索の結果をデバウンスするための変数
-const debounce = (func, wait = 500) => {
+const debounce = (func, wait = 250) => {
   var timerId;
   return function (...args) {
     if (timerId) {
@@ -130,7 +130,7 @@ export default {
   methods: {
     handleChange: debounce(function () {
       this.getSearch();
-    }, 650),
+    }, 300),
     async getSearch() {
       // 検索クエリーがない場合はresultsを消してリターン
       if (this.query.length === 0) {
