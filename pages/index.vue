@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- スクロールが閾値を超えると検索・作成ボタンがスクロール追従するクラスを付与 -->
-    <v-col cols="12" sm="8" md="8" :class="[isScroll ? 'fixed fadeDown' : '']" :transtion="[isScroll ? 'slide-y-transition' : '']">
+    <v-col cols="12" sm="8" md="8" :class="[isScroll ? 'fixed fadeUp' : '']" :transtion="[isScroll ? 'slide-y-transition' : '']">
 
       <!-- ハッシュタグの選択機能は一旦保留 -->
       <!-- <v-col cols="2" sm="8"  class="mr-4">
@@ -213,17 +213,17 @@ export default {
   opacity: 0.9;
 }
 
-.fadeDown{
-animation-name:fadeDownAnime;
-animation-duration: 1.5s;
+.fadeUp{
+animation-name:fadeUpAnimation;
+animation-duration: 0.2s;
 animation-fill-mode:forwards;
-opacity:0.5;
+opacity:0;
 }
 
-@keyframes fadeDownAnime{
+@keyframes fadeUpAnimation{
   from {
     opacity: 0.1;
-  transform: translateY(-3px);
+  transform: translateY(10px);
   }
 
   to {

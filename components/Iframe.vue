@@ -103,14 +103,14 @@ export default {
 animation-name:fadeInAnime;
 animation-duration:1s;
 animation-fill-mode:forwards;
-opacity:0.3;
+opacity:0;
 }
 
 .fadeIn-Btn {
   animation-name:fadeInAnime;
   animation-duration:1s;
   animation-fill-mode:forwards;
-  opacity:0.4;
+  opacity:0;
 }
 
 @keyframes fadeInAnime{
