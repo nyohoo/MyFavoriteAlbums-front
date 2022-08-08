@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/google-gtag": "^1.0.4",
     "@nuxtjs/vuetify": "^1.12.3"
   }
 }

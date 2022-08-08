@@ -49,7 +49,13 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
+    "@nuxtjs/google-gtag"
   ],
+
+  "google-gtag": {
+    id: "G-XJ7BXT5V60",
+    debug: true
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
