@@ -33,7 +33,7 @@
         <v-container>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-textarea v-model="tweetBody" :counter="117" label="本文" persistent-hint autofocus
-              required hint="このページへのURLが末尾に入ります" :rules="[rules.max]" />
+              required hint="このページのURLが末尾に入ります" :rules="[rules.max]" />
           </v-form>
         </v-container>
       </v-card-text>
