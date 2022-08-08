@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- スクロールが閾値を超えると検索・作成ボタンがスクロール追従するクラスを付与 -->
-    <v-col cols="12" sm="8" md="8" :class="[isScroll ? 'fixed' : '']">
+    <v-col cols="12" sm="8" md="8" :class="[isScroll ? 'fixed fadeDown' : '']" :transtion="[isScroll ? 'slide-y-transition' : '']">
 
       <!-- ハッシュタグの選択機能は一旦保留 -->
       <!-- <v-col cols="2" sm="8"  class="mr-4">
@@ -20,12 +20,13 @@
       v-col> -->
 
       <!-- 検索フォーム -->
-      <v-text-field type="text" label="Artist, Album, Songs" v-model="query" :solo="isScroll" @input="handleChange"
+      <v-text-field type="text" label="Artist, Album, Songs" v-model="query" :solo="isScroll" :dense="isScroll" @input="handleChange"
         id="searchField" append-icon="mdi-search" @click:append="sendQuery">
         <template v-slot:append-outer>
-          <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;" :tile="isScroll"
-            :width="isScroll ? '1%' : '90%'" large>
-            <v-icon left>mdi-playlist-check</v-icon>作成
+          <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -5px;" :tile="isScroll"
+            :width="isScroll ? '80%' : '90%'" :large="!isScroll" >
+            <v-icon left>mdi-check-circle-outline</v-icon>
+            作成
             <v-badge color="primary" v-if="albums.length" :content="albums.length" />
           </v-btn>
         </template>
@@ -119,7 +120,7 @@ export default {
   },
   watch: {
     scrollY() {
-      if (scrollY > 10) {
+      if (scrollY > 30) {
         this.isScroll = true;
       } else {
         this.isScroll = false;
@@ -206,9 +207,28 @@ export default {
 .fixed {
   /* 上部に固定する */
   position: fixed;
-  z-index: 10;
+  z-index:10;
   top: 52px;
   width: 50vh;
-  opacity: 0.95;
+  opacity: 0.9;
+}
+
+.fadeDown{
+animation-name:fadeDownAnime;
+animation-duration: 1.5s;
+animation-fill-mode:forwards;
+opacity:0.5;
+}
+
+@keyframes fadeDownAnime{
+  from {
+    opacity: 0.1;
+  transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 0.9;
+  transform: translateY(0);
+  }
 }
 </style>
