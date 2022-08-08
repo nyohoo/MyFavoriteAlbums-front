@@ -22,7 +22,7 @@
 
         <v-list-item :to="'/'" nuxt exact>
           <v-list-item-action >
-            <v-icon>mdi-apps</v-icon>
+            <v-icon>mdi-pencil</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title v-text="'投稿作成'" />
