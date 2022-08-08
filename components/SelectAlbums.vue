@@ -4,7 +4,9 @@
     v-if="isDialog"
     @click:outside="closeDialog"
     >
-    <v-card height="50%" width="100%">
+    <v-card height="50%" width="100%"
+    class="fadeDwon"
+    rounded-lg>
       <v-container>
         <!-- ドラッグ＆ドロップで入れ替え可能にする -->
         <draggable
@@ -335,13 +337,14 @@ export default {
 
 <style>
 .checkbox-btn {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .checkbox {
   display: flex;
   position: absolute;
-  bottom: 0;
+  bottom: 4px;
+  left : 4px;
 }
 
 </style>

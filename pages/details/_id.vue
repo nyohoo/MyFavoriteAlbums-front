@@ -15,12 +15,12 @@
         <p class="text-h6" align="left">さんの</p>
       </v-row>
       <v-row algin="center" justify="center" class="mt-0 mb-5">
-        <div v-text="post.hash_tag" class="headline" />
+        <div v-text="post.hash_tag" class="text-h5" />
       </v-row>
       <!-- spotifyのアルバム情報から9枚を描画し、メインイメージとして表示 -->
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
-          <v-card justify="center">
+          <v-card justify="center" class="fadeUp">
             <v-container>
               <v-row>
                 <v-col v-for="album in post.albums" :key="album.id" class="d-flex child-flex ma-0 pa-0" cols="4">
