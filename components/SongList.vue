@@ -2,7 +2,7 @@
   <v-col cols="6" sm="3">
     <v-card class="album-card rounded fadeUp">
       <v-hover v-slot:default="{ hover }">
-        <v-card :class="hover ? 'songlist-transparent' : ''" tile class="fadeDown">
+        <v-card :class="hover ? 'songlist-transparent' : ''" tile>
           <v-img :src="result.images[0].url" :lazy-src="result.images[0].url" :alt="result.name"
             :class="{ 'pointer': hover }" :style="{ 'cursor': hover ? 'pointer' : 'default' }" aspect-ratio="1"
             @click="openAlbumIframe(result)" class="ma-2 mb-0 rounded-0">
@@ -118,7 +118,7 @@ export default {
 
 .fadeUp{
 animation-name:fadeUpAnime;
-animation-duration: 0.5s;
+animation-duration: 0.8s;
 animation-fill-mode:forwards;
 opacity:0.7;
 }
