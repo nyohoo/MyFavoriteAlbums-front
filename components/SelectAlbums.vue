@@ -4,9 +4,7 @@
     v-if="isDialog"
     @click:outside="closeDialog"
     >
-    <v-card height="50%" width="100%"
-    class="fadeDwon"
-    rounded-lg>
+    <v-card height="50%" width="100%">
       <v-container>
         <!-- ドラッグ＆ドロップで入れ替え可能にする -->
         <draggable
@@ -253,6 +251,9 @@ export default {
     Loading
   },
   computed: {
+    hashtag() {
+      return this.$store.state.albums.hashtag;
+    },
     results: {
       get() {
         return this.$store.state.albums.albums;
@@ -316,7 +317,7 @@ export default {
         const response = await this.$axios.$post("posts", {
           album_ids: this.results.map(album => album.id),
           image_paths: this.results.map(album => album.images[0].url),
-          hash_tag: "#私を構成する9枚"
+          hash_tag: this.hashtag,
         })
 
         // 処理中フラグを消す
