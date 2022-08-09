@@ -4,9 +4,8 @@
     v-if="isIframe"
     width="40vh"
     :height="`${isDetail ? '150vh' : '40vh'}`"
-    class="dialog-shadow pa-10 ma10"
+    class="dialog-shadow pa-10 ma10 "
     overlay-color="grey darken-3"
-    transition="fade-transition"
     content-class="elevation-0"
     @click:outside="closeDialog"
     :overlay-opacity="`${isSongList ? 0.7 : 0.58}`"
@@ -14,7 +13,7 @@
     <!-- 閉じるボタン -->
     <v-card 
       color="white"
-      class="transparent"
+      class="transparent fadeIn-Btn"
       hover
     >
       <v-card-actions> 
@@ -43,14 +42,13 @@
     </v-card>
     <!-- /閉じるボタン -->
     <!-- SpotifyIframeの表示 -->
-    <v-card class="transparent">
+    <v-card class="transparent fadeIn">
       <iframe
         style="border-radius:12px" 
         :src="`https://open.spotify.com/embed/${embedType}/${spotifyId}?utm_source=generator`" 
         width="100%" 
         height="380" 
         frameBorder="0" 
-        allowfullscreen="" 
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       >
       </iframe>
@@ -99,5 +97,29 @@ export default {
 }
 .dialog-shadow {
   box-shadow: none!important;
+}
+
+.fadeIn{
+animation-name:fadeInAnime;
+animation-duration:1s;
+animation-fill-mode:forwards;
+opacity:0;
+}
+
+.fadeIn-Btn {
+  animation-name:fadeInAnime;
+  animation-duration:1s;
+  animation-fill-mode:forwards;
+  opacity:0;
+}
+
+@keyframes fadeInAnime{
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.95;
+  }
 }
 </style>

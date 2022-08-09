@@ -49,7 +49,13 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     '@nuxtjs/dotenv',
+    "@nuxtjs/google-gtag"
   ],
+
+  "google-gtag": {
+    id: "G-XJ7BXT5V60",
+    debug: true
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -76,7 +82,7 @@ export default {
             primary: "#1DB954",
             secondary: "#8bc34a",
             accent: "#cddc39",
-            error: "#ffeb3b",
+            error: "#E53935",
             warning: "#ffc107",
             info: colors.blue.darken1,
             success: "#795548"

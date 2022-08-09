@@ -1,42 +1,48 @@
 <template>
   <v-container>
     <!-- スクロールが閾値を超えると検索・作成ボタンがスクロール追従するクラスを付与 -->
-    <v-col cols="12" sm="8" md="8" :class="[isScroll ? 'fixed' : '']">
-
-      <!-- ハッシュタグの選択機能は一旦保留 -->
-      <!-- <v-col cols="2" sm="8"  class="mr-4">
-    <v-select
-      v-model="select"
-      :hint="`${select.state}`"
-      :items="items"
-      item-text="state"
-      item-value="abbr"
-      label="Select"
-      persistent-hint
-      return-object
-      single-line
-      dense
-    ></v-select>
-      v-col> -->
-
-      
-
+    <v-col cols="12" xs="11" sm="10" md="8" :class="[isScroll ? 'fixed fadeUp' : '']" class="mb-0 pb-0">
       <!-- 検索フォーム -->
-      <v-text-field type="text" label="Artist, Album, Songs" v-model="query" :solo="isScroll" @input="handleChange"
-        id="searchField" append-icon="mdi-search" @click:append="sendQuery">
+      <v-text-field type="text" hint="Artist, Album, Songs" placeholder="Search" 
+        v-model="query" solo :dense="isScroll" @input="handleChange"
+        id="searchField" @click:append="openHelpDialog">
+        <template v-slot:prepend>
+          <v-tooltip
+            bottom
+          >
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">
+                mdi-help-circle
+              </v-icon>
+            </template>
+            使い方説明まだ未実装です...
+          </v-tooltip>
+        </template>
         <template v-slot:append-outer>
-          <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -10px;" :tile="isScroll"
-            :width="isScroll ? '1%' : '90%'" large>
-            <v-icon left>mdi-playlist-check</v-icon>作成
+          <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -5px;" :tile="isScroll"
+            :width="isScroll ? '80%' : '90%'" :large="!isScroll" >
+            <v-icon left>mdi-check-circle-outline</v-icon>
+            作成
             <v-badge color="primary" v-if="albums.length" :content="albums.length" />
           </v-btn>
-          <!-- </v-col> -->
         </template>
       </v-text-field>
     </v-col>
 
+    <!-- ハッシュタグの選択機能 -->
+    <v-col cols="10" md="4" lg="4" sm="7" class="mt-0 pt-1 ml-9" d-flex >
+      <v-select
+        v-model="selectedHashtag"
+        :items="items"
+        return-object
+        dense
+        class="text-caption"
+        @change="addHashtag()"
+      >
+      </v-select>
+    </v-col>
 
-
+    <IndexHelpDialog :helpDialog="isHelpDialog" @closeDialog="isHelpDialog = false" />
     <SelectAlbums ref="selectAlbums" />
 
     <!-- 検索結果の表示 -->
@@ -45,6 +51,7 @@
         <SongList v-if="isVisible" v-for="result in results" :key="result.id" :result="result"
           class="d-flex child-flex" />
 
+        <!-- 無限スクロール -->
         <infinite-loading @infinite="infiniteHandler">
           <div slot="no-more" v-show="isInfinity">No more message</div>
         </infinite-loading>
@@ -53,13 +60,14 @@
   </v-container>
 </template>
 
-
 <script>
 import { axios } from '@/plugins/axios';
 import SongList from '@/components/SongList';
 import SelectAlbums from '@/components/SelectAlbums';
+import IndexHelpDialog from '../components/IndexHelpDialog.vue';
 
-const debounce = (func, wait = 500) => {
+// 検索の結果をデバウンスするための変数
+const debounce = (func, wait = 250) => {
   var timerId;
   return function (...args) {
     if (timerId) {
@@ -97,33 +105,40 @@ export default {
       dialog: false,
       song: '',
       isInfinity: false,
-
-      // select: { state: '#私を構成する9枚のアルバム', abbr: 'FL' },
-      // items: [
-      //   { state: '#私を構成する9枚のアルバム', abbr: 'FL' },
-      //   { state: '#私を構成するHIP-HOP', abbr: 'GA' },
-      //   { state: '#私を構成するインディーロック', abbr: 'NE' },
-      //   { state: '#2022上半期ベストアルバム', abbr: 'CA' },
-      //   { state: '#2022年間ベストアルバム', abbr: 'NY' },
-      // ],
+      isHelpDialog: false,
+      selectedHashtag: '#私を構成する9枚',
+      items: [
+        '#私を構成する9枚',
+        '#私を構成する9枚のロックアルバム',
+        '#私を構成する9枚のHIP-HOP',
+        '#私を構成する9枚のアニソン',
+        '#私を構成する9枚のインディーロック',
+        '#2022上半期ベストアルバム',
+        '#2022年間ベストアルバム',
+      ],
     };
   },
   components: {
     SongList,
     SelectAlbums,
-  },
+    IndexHelpDialog
+},
   computed: {
     albums() {
       return this.$store.state.albums.albums;
     },
+    hashtag() {
+      return this.$store.state.albums.hashtag;
+    }
   },
   mounted() {
     document.getElementById("searchField").focus();
     window.addEventListener('scroll', this.handleScroll);
+    this.setDefaultHashtag();
   },
   watch: {
     scrollY() {
-      if (scrollY > 10) {
+      if (scrollY > 30) {
         this.isScroll = true;
       } else {
         this.isScroll = false;
@@ -133,7 +148,7 @@ export default {
   methods: {
     handleChange: debounce(function () {
       this.getSearch();
-    }, 650),
+    }, 300),
     async getSearch() {
       // 検索クエリーがない場合はresultsを消してリターン
       if (this.query.length === 0) {
@@ -179,14 +194,14 @@ export default {
         $state.complete()
       }
     },
-    removeAlbums(album) {
-      this.$store.dispatch("albums/deleteAlbums", album);
+    setDefaultHashtag() {
+      // ローカルストレージが空の場合はデフォルトのハッシュタグを利用する
+      if (!localStorage.getItem('albums')) return;
+      // vuexで永続化しているハッシュタグをローカルストレージから取得してセット
+      this.selectedHashtag = JSON.parse(window.localStorage.getItem("albums")).albums.hashtag;
     },
-    checkSelectAlbum(result) {
-      return this.albums.some((album) => album.id === result.id);
-    },
-    setSong(result) {
-      this.song = `https://open.spotify.com/embed/album/${result.album.id}`;
+    addHashtag() {
+      this.$store.dispatch("albums/addHashtag", this.selectedHashtag);
     },
     handleScroll() {
       this.scrollY = window.scrollY;
@@ -194,9 +209,9 @@ export default {
     openSelectAlbums() {
       this.$refs.selectAlbums.isDialog = true
     },
-    sendQuery() {
-      this.handleChange();
-    }
+    openHelpDialog() {
+      this.isHelpDialog = true;
+    },
   },
 };
 </script>
@@ -210,9 +225,28 @@ export default {
 .fixed {
   /* 上部に固定する */
   position: fixed;
-  z-index: 10;
+  z-index:10;
   top: 52px;
   width: 50vh;
-  opacity: 0.95;
+  opacity: 0.9;
+}
+
+.fadeUp{
+animation-name:fadeUpAnimation;
+animation-duration: 0.4s;
+animation-fill-mode:forwards;
+opacity:0;
+}
+
+@keyframes fadeUpAnimation{
+  from {
+    opacity: 0.1;
+  transform: translateY(10px);
+  }
+
+  to {
+    opacity: 0.9;
+  transform: translateY(0);
+  }
 }
 </style>

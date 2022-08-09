@@ -1,26 +1,31 @@
 <template>
-<!-- ログアウト -->
-<v-container fluid>
-  <v-row justify="center">
-    <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-      <v-card>
-        <v-card-title>
-          <span class="headline">ログアウト</span>
-        </v-card-title>
-        <v-card-text>
-          <v-btn @click="handleLogout">ログアウト</v-btn>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
-</v-container>
+  <!-- ログアウト -->
+  <v-container fluid fill-height>
+    <v-card class="d-flex flex-column mx-auto my-6 flat" width="50vh">
+      <v-card-title class="d-flex justify-center pa-0 mt-6">ログアウト</v-card-title>
+      <v-card-text class="d-flex justify-center flex-column">
+        <v-btn class="fill-width mt-6 text-capitalize caption mx-4" rounded color="#00ACEE" dark depressed height="48px"
+          @click="handleLogout">
+          <v-icon style="height: 20px" color="white" class="mr-2">
+            mdi-logout
+          </v-icon>
+          ログアウトする
+        </v-btn>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
 import { axios } from '@/plugins/axios';
 
 export default {
-  head () {
+  middleware({ store, redirect }) {
+    if (!store.state.login.user) {
+      redirect('/login');
+    }
+  },
+  head() {
     return {
       title: 'ログアウト',
       meta: [
@@ -35,7 +40,6 @@ export default {
       ]
     }
   },
-  middleware: 'redirect',
   methods: {
     async handleLogout() {
       await axios.$delete('auth/sign_out')

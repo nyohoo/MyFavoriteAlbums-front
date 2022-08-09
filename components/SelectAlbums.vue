@@ -217,7 +217,7 @@
 
     <!-- 画像作成時のローディング処理 -->
     <div>
-      <Loading v-if="isLoading" :loading="isLoading" />
+      <Loading v-if="isLoading" :loading="isLoading" :isCreatePost="isCreatePostLoading" />
     </div>
 
   </v-dialog>
@@ -235,6 +235,7 @@ export default {
       isDialog: false,
       isEdit: false,
       isLoading: false,
+      isCreatePostLoading: false,
       checkedDeleteList: [],
       flashDelete: false,
       flashCreate: false,
@@ -250,6 +251,9 @@ export default {
     Loading
   },
   computed: {
+    hashtag() {
+      return this.$store.state.albums.hashtag;
+    },
     results: {
       get() {
         return this.$store.state.albums.albums;
@@ -306,13 +310,14 @@ export default {
 
       // ローディングを表示する
       this.isLoading = true;
+      this.isCreatePostLoading = true;
 
       try {
         // アルバムを作成する
         const response = await this.$axios.$post("posts", {
           album_ids: this.results.map(album => album.id),
           image_paths: this.results.map(album => album.images[0].url),
-          hash_tag: "#私を構成する9枚"
+          hash_tag: this.hashtag,
         })
 
         // 処理中フラグを消す
@@ -323,6 +328,7 @@ export default {
         this.$router.push(`/details/${response}`);
       } catch (error) {
         this.isLoading = false;
+        this.isCreatePostLoading = false;
         console.error(error);
       }       
     },
@@ -332,13 +338,14 @@ export default {
 
 <style>
 .checkbox-btn {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .checkbox {
   display: flex;
   position: absolute;
-  bottom: 0;
+  bottom: 4px;
+  left : 4px;
 }
 
 </style>
