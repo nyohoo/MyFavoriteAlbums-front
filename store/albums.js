@@ -1,5 +1,6 @@
 export const state = () => ({
   albums: [],
+  hashtag: '',
 });
 
 export const actions = {
@@ -15,6 +16,9 @@ export const actions = {
   deleteAllAlbums({ commit }) {
     commit("deleteAllAlbums");
   },
+  addHashtag({ commit }, hashtag) {
+    commit("addHashtag", hashtag);
+  }
 };
 
 export const mutations = {
@@ -32,5 +36,8 @@ export const mutations = {
   },
   createAlbums(state, albums) {
     state.albums = albums;
+  },
+  addHashtag(state, hashtag) {
+    state.hashtag = hashtag;
   }
 };
