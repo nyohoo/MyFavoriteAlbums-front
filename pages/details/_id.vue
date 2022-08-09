@@ -188,13 +188,11 @@ export default {
     async sendTweetBody() {
     // tweets/createアクションに投稿内容を送信
     try {
-      console.log(this.post.uuid);
       const data = await axios.$post("tweets", {
         post_uuid: this.post.post_uuid,
         text: "テスト投稿です！",
         url: window.location.href,
       })
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
