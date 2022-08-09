@@ -196,7 +196,10 @@ export default {
     },
     setDefaultHashtagByLocalStorage() {
       // ローカルストレージが空の場合はデフォルトのハッシュタグを利用する
-      if (!window.localStorage.getItem("albums")) return;
+      if (!window.localStorage.getItem("albums")) {
+        this.addHashtag();
+        return;
+      }
       // vuexで永続化しているハッシュタグをローカルストレージから取得してセット
       this.selectedHashtag = JSON.parse(window.localStorage.getItem("albums")).albums.hashtag;
     },
