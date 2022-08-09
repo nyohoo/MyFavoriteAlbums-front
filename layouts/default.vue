@@ -6,6 +6,20 @@
         <span style="font-family: 'Oswald', sans-serif">{{ title }}</span>
       </v-toolbar-title>
       <v-spacer />
+      <v-btn
+        v-if="path !== '/'"
+        color="light-blue darken-4"
+        rounded
+        to="/"
+        nuxt
+      >
+        <v-icon
+          dense
+        >
+          mdi-pencil
+        </v-icon>
+        作成
+      </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
 
@@ -16,7 +30,7 @@
             <v-icon>mdi-border-all</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="'最近の投稿をみる'" />
+            <v-list-item-title v-text="'みんなの投稿'" />
           </v-list-item-content>
         </v-list-item>
 
@@ -25,7 +39,7 @@
             <v-icon>mdi-pencil</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="'投稿作成'" />
+            <v-list-item-title v-text="'投稿を作成する'" />
           </v-list-item-content>
         </v-list-item>
 
@@ -117,6 +131,10 @@ export default {
   computed: {
     islogin() {
       return this.$store.state.login.user
+    },
+    // pathを取得
+    path() {
+      return this.$route.path
     }
   },
   watch: {
@@ -131,7 +149,7 @@ export default {
   methods: {
     jumpHome() {
       this.$router.push('/')
-    }
+    },
   }
 }
 </script>
