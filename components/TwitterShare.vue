@@ -96,9 +96,7 @@ export default {
         this.isLoading = false;
         this.isShareTwitterLoading = false;
         this.resetForm();
-        console.log(data);
       } catch (error) {
-        console.log(error);
         this.isLoading = false;
         this.isShareTwitterLoading = false;
       }
