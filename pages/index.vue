@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- スクロールが閾値を超えると検索・作成ボタンがスクロール追従するクラスを付与 -->
-    <v-col cols="12" xs="10" sm="10" md="8" :class="[isScroll ? 'fixed fadeUp' : '']" class="mb-0 pb-0">
+    <v-col cols="12" xs="11" sm="10" md="8" :class="[isScroll ? 'fixed fadeUp' : '']" class="mb-0 pb-0">
       <!-- 検索フォーム -->
       <v-text-field type="text" hint="Artist, Album, Songs" placeholder="Search" 
         v-model="query" solo :dense="isScroll" @input="handleChange"
