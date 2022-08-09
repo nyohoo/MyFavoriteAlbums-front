@@ -4,7 +4,7 @@ export default ({ store }) => {
   window.onNuxtReady(() =>{
     createPersistedState({
     key: 'albums',
-    paths: ["albums.albums"],
+    paths: ["albums.albums", "albums.hashtag"],
     })(store)
   })
 }
