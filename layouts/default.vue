@@ -110,10 +110,8 @@ export default {
   mounted() {
     if (!this.$store.state.login.user) {
       this.user = []
-      console.log(this.user)
     } else {
       this.user = this.$store.state.login.user
-      console.log(this.user)
     }
   },
   computed: {
