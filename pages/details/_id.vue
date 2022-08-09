@@ -59,7 +59,7 @@
             <v-btn class="mx-2" width="80px" color="red darken-1" style="text-transform: none;" rounded @click="openConfirm">
               <v-icon>mdi-trash-can</v-icon>
             </v-btn>
-            <ConfirmDialog :isConfirmDialog="isConfirmDialog" :postUuid="post.post_uuid" @closeDialog="isConfirmDialog = false" />
+            <ConfirmDialog :isConfirmDialog="isConfirmDialog" :postUuid="post.post_uuid" :userUid="user.uid" @closeDialog="isConfirmDialog = false" />
           </v-col>
           <div v-else class="pt-10"></div>
         </v-col>
@@ -185,19 +185,6 @@ export default {
     openTwitterCard() {
       this.isTwitterCardDialog = true;
     },
-    async sendTweetBody() {
-    // tweets/createアクションに投稿内容を送信
-    try {
-      const data = await axios.$post("tweets", {
-        post_uuid: this.post.post_uuid,
-        text: "テスト投稿です！",
-        url: window.location.href,
-      })
-    } catch (error) {
-      console.log(error);
-    }
-    },
-
   },
 };
 </script>

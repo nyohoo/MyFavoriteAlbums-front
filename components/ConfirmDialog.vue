@@ -69,6 +69,10 @@ export default {
       type: String,
       default: "",
     },
+    userUid: {
+      type: String,
+      default: "",
+    },
   },
   methods: {
     async removePost() {
@@ -80,8 +84,8 @@ export default {
           },
         });
         this.isLoading = false;
-        this.$router.push("/");
-        // issue:削除完了メッセージを表示する
+        // 削除したらユーザー画面に遷移する
+        this.$router.push(`/users/${this.userUid}`);
       } catch (error) {
         this.isLoading = false;
         console.log(error);
