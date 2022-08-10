@@ -105,12 +105,19 @@
 <script>
 export default {
   name: 'DefaultLayout',
+  head() {
+    return {
+      link: [ 
+        { rel: 'canonical', href: process.env.SERVICE_URL + this.$route.path },
+      ],
+    }
+  },
   head: {
     link: [
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap"
-      }
+      },
     ]
   },
   data() {

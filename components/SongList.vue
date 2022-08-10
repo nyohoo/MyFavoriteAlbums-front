@@ -2,10 +2,10 @@
   <v-col cols="6" sm="3">
     <v-card class="album-card rounded fadeUp">
       <v-hover v-slot:default="{ hover }">
-        <v-card :class="hover ? 'songlist-transparent' : ''" tile>
+        <!-- <v-card :class="hover ? 'songlist-transparent' : ''" tile> -->
           <v-img :src="result.images[0].url" :lazy-src="result.images[0].url" :alt="result.name"
-            :class="{ 'pointer': hover }" :style="{ 'cursor': hover ? 'pointer' : 'default' }" aspect-ratio="1"
-            @click="openAlbumIframe(result)" class="ma-2 mb-0 rounded-0">
+            :class="{ 'pointer': hover }" :style="{ 'cursor': hover ? 'pointer' : 'default' }"
+            @click="openAlbumIframe(result)" class="ma-2 mb-0 rounded-0" flat>
             <!-- ローディング中の処理 -->
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
@@ -13,7 +13,7 @@
               </v-row>
             </template>
           </v-img>
-        </v-card>
+        <!-- </v-card> -->
       </v-hover>
       <v-card-text class="pt-3 pb-0">
         <v-hover v-slot:default="{ hover }">
@@ -32,11 +32,11 @@
       </v-card-text>
 
       <!-- ボタン -->
-      <v-card-actions class="ma-0 pt-0 pb-2">
-        <v-btn @click="openAlbumIframe(result)" class="ma-0" fab icon height="40px" right width="40px">
+      <v-card-actions class="ma-0 pt-1 pb-2">
+        <v-btn @click="openAlbumIframe(result)" class="ma-0" fab icon height="40px" large width="40px">
           <v-icon color="secondary">mdi-play-circle</v-icon>
         </v-btn>
-        <v-btn v-if="checkSelectAlbum(result)" @click="removeAlbums(result)" class="ml-2" fab icon height="40px" right
+        <v-btn v-if="checkSelectAlbum(result)" @click="removeAlbums(result)" class="ml-2" large fab icon height="40px" 
           width="40px">
           <v-icon color="primary">mdi-heart</v-icon>
           <v-badge color="primary" v-if="albums.length" :content="getAlbumIndex(result) + 1" />

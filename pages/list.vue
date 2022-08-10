@@ -51,6 +51,17 @@
 import { axios } from "@/plugins/axios";
 
 export default {
+  head() {
+    return {
+      title: "投稿一覧",
+      meta: [
+        {
+          name: "description",
+          content: "投稿一覧ページです。"
+        }
+      ]
+    };
+  },
   data() {
     return {
       posts: [],
