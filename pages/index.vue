@@ -10,7 +10,7 @@
           <v-tooltip
             bottom
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 mdi-help-circle
               </v-icon>
@@ -18,7 +18,7 @@
             使い方説明まだ未実装です...
           </v-tooltip>
         </template>
-        <template v-slot:append-outer>
+        <template #append-outer>
           <v-btn @click="openSelectAlbums" rounded class="my-0 ml-0" style="top: -5px;" :tile="isScroll"
             :width="isScroll ? '80%' : '90%'" :large="!isScroll" >
             <v-icon left>mdi-check-circle-outline</v-icon>
@@ -134,7 +134,7 @@ export default {
   mounted() {
     document.getElementById("searchField").focus();
     window.addEventListener('scroll', this.handleScroll);
-    this.setDefaultHashtag();
+    this.setDefaultHashtagByLocalStorage();
   },
   watch: {
     scrollY() {
@@ -194,9 +194,12 @@ export default {
         $state.complete()
       }
     },
-    setDefaultHashtag() {
+    setDefaultHashtagByLocalStorage() {
       // ローカルストレージが空の場合はデフォルトのハッシュタグを利用する
-      if (!localStorage.getItem('albums')) return;
+      if (!window.localStorage.getItem("albums")) {
+        this.addHashtag();
+        return;
+      }
       // vuexで永続化しているハッシュタグをローカルストレージから取得してセット
       this.selectedHashtag = JSON.parse(window.localStorage.getItem("albums")).albums.hashtag;
     },
