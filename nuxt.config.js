@@ -46,6 +46,7 @@ export default {
   env: {
     BASE_URL: process.env.BASE_URL,
     CALL_BACK: process.env.CALL_BACK,
+    SERVICE_URL: process.env.SERVICE_URL,
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
