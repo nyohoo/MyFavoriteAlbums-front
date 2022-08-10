@@ -18,7 +18,10 @@ export const actions = {
   },
   addHashtag({ commit }, hashtag) {
     commit("addHashtag", hashtag);
-  }
+  },
+  clearAlbums({ commit }) {
+    commit("clearAlbums");
+  },
 };
 
 export const mutations = {
@@ -39,5 +42,9 @@ export const mutations = {
   },
   addHashtag(state, hashtag) {
     state.hashtag = hashtag;
-  }
+  },
+  clearAlbums(state) {
+    state.albums = [];
+    state.hashtag = '';
+  },
 };

@@ -323,6 +323,7 @@ export default {
         // 処理中フラグを消す
         this.processing = false;
         // 作成に成功した場合はlocalStorageを空にする
+        this.$store.dispatch("albums/clearAlbums");
         window.localStorage.removeItem('albums');
         // responseで取得したuuidのページに遷移する
         this.$router.push(`/details/${response}`);
