@@ -82,6 +82,8 @@ export default {
     '@nuxtjs/axios',
     // '@nuxtjs/auth',
     'cookie-universal-nuxt',
+    // SEO対策
+    '@nuxtjs/sitemap'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
