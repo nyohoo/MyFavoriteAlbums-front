@@ -16,8 +16,25 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { hid: 'keywords', name: 'keywords', content: 'MyFavoriteAlbums, #私を構成する9枚, 作成, ツイッター, Twitter, ハッシュタグ, 音楽, 共有, アルバム, ジャケット' },
+      { hid: 'description', name: 'description', content: 'MyFavoriteAlbumsは、#私を構成する9枚の作成・シェアを支援するサービスです。' },
+      { name: 'format-detection', content: 'telephone=no' },
+
+      { hid: 'og:site_name', property: 'og:site_name', content: 'MyFavoriteAlbums' },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      { hid: 'og:url', property: 'og:url', content: 'https://my-favorite-albums.jp' },
+      { hid: 'og:title', property: 'og:title', content: 'MyFavoriteAlbums' },
+      { hid: 'og:description', property: 'og:description', content: 'MyFavoriteAlbumsは、#私を構成する9枚の作成・シェアを支援するサービスです。' },
+      { hid: 'og:locale', property: 'og:locale', content: 'ja_JP' },
+      { hid: 'og:locale:alternate', property: 'og:locale:alternate', content: 'en_US' },
+
+      { hid: 'twitter:card', name: 'twitter:card', content: 'app' },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@favorite_albums' },
+      { hid: 'twitter:title', name: 'twitter:title', content: 'MyFavoriteAlbums' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'MyFavoriteAlbumsは、#私を構成する9枚の作成・シェアを支援するサービスです。' },
+
+
+
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
