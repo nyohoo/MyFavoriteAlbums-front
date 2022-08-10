@@ -10,21 +10,28 @@
         <v-row class="mb-12" justify="center">
           <v-progress-circular
             indeterminate
-            color="primary"
-            size="70"
-            width="7"
+            color="rgba(255, 255, 0, 0.7)"
+            size="50"
+            width="4"
           >
           </v-progress-circular>
         </v-row>
         <v-row  justify="center">
           <div >
-            <p v-if="isCreatePost" class="black--text text-h4 font-weight-bold"><v-icon left large color="light-green lighten-1">mdi-robot</v-icon>画像作成中です...<v-icon right large color="light-green lighten-1">mdi-robot</v-icon></p>
-            <p v-if="isShareTwitter" class="black--text text-h4 font-weight-bold"><v-icon left large color="light-green lighten-1">mdi-robot</v-icon>ツイッターに投稿中です...<v-icon right large color="light-green lighten-1">mdi-robot</v-icon></p>
-          </div>
-        </v-row>
-        <v-row  justify="center">
-          <div>
-            <p class="black--text text-h6 font-weight-bold">しばらくお待ちください。</p>
+            <ul v-if="isCreatePost">
+              <li>画</li>
+              <li>像</li>
+              <li>作</li>
+              <li>成</li>
+              <li>中</li>
+            </ul>
+            <ul v-if="isShareTwitter">
+              <li>ツ</li>
+              <li>イ</li>
+              <li>ー</li>
+              <li>ト</li>
+              <li>中</li>
+            </ul>            
           </div>
         </v-row>
       </v-container>
@@ -50,3 +57,54 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+ul {
+  display: flex;
+}
+
+li {
+  list-style: none;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 10px;
+  animation: loading 1.4s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    color: #111604;
+    text-shadow: none;
+  }
+  90% {
+    color: #484848;
+    text-shadow: none;
+  }
+  100% {
+    color: #fff900;
+    text-shadow: 0 0 7px #fff900, 0 0 50px #ff6c00;
+  }
+}
+
+li:nth-child(1) {
+  animation-delay: .2s;
+}
+li:nth-child(2) {
+  animation-delay: .4s;
+}
+li:nth-child(3) {
+  animation-delay: .6s;
+}
+li:nth-child(4) {
+  animation-delay: .8s;
+}
+li:nth-child(5) {
+  animation-delay: 1s;
+}
+li:nth-child(6) {
+  animation-delay: 1.2s;
+}
+li:nth-child(7) {
+  animation-delay: 1.4s;
+}
+</style>
