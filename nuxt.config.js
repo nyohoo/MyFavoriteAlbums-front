@@ -33,6 +33,8 @@ export default {
       { hid: 'twitter:title', name: 'twitter:title', content: 'MyFavoriteAlbums' },
       { hid: 'twitter:description', name: 'twitter:description', content: 'MyFavoriteAlbumsは、#私を構成する9枚の作成・シェアを支援するサービスです。' },
 
+      { hid: 'google-site-verification', name: 'google-site-verification', content: 'V6bHkVwcgxWM8_878lFBd2ROq5sUBXj4jNlzbYlIJNY' },
+
 
 
     ],
