@@ -110,6 +110,10 @@ export default {
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap"
+      },
+      {
+        rel: "canonical",
+        href: `https://my-favorite-albums.jp${this.$route.path}`,
       }
     ]
   },
