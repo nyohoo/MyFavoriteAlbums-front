@@ -102,7 +102,7 @@ export default {
       }
     },
     setForm() {
-      this.tweetBody = this.post.hash_tag + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+      this.tweetBody = this.post.hash_tag + "\n" + "\n" + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
     },
     resetForm() {
       this.$emit('resetForm');
