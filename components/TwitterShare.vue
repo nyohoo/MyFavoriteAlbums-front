@@ -102,11 +102,15 @@ export default {
       }
     },
     setForm() {
-      if (this.post.hash_tag === '#ロッキンで観るべきアーティスト９選') {
-        this.tweetBody = this.post.hash_tag + "\n"  + '#ロッキン' + "\n"  + '#ロッキン中止' + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+      if (this.post.hashtag === '#日曜日だし邦ロック好きな人と繋がりたい') {
+        this.tweetBody = this.post.hash_tag + "\n"  + '#邦ロック好きな人と繋がりたい' + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
         return;
       }
-      if (this.post.hash_tag === '#サマソニで観るべきアーティスト９選') {
+      if (this.post.hash_tag === '#ロッキンで観てほしいアーティスト９選') {
+        this.tweetBody = this.post.hash_tag + "\n"  + '#ロッキン' + "\n" + "#ロッキンジャパン2022" + "\n" + "#RIJF2022" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+        return;
+      }
+      if (this.post.hash_tag === '#サマソニで観てほしいアーティスト９選') {
         this.tweetBody = this.post.hash_tag + "\n" + '#サマソニ' + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
         return;
       }
