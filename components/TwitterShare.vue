@@ -102,7 +102,15 @@ export default {
       }
     },
     setForm() {
-      this.tweetBody = this.post.hash_tag + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+      if (this.post.hash_tag === '#ロッキンで観るべきアーティスト９選') {
+        this.tweetBody = this.post.hash_tag + "\n"  + '#ロッキン' + "\n"  + '#ロッキン中止' + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+        return;
+      }
+      if (this.post.hash_tag === '#サマソニで観るべきアーティスト９選') {
+        this.tweetBody = this.post.hash_tag + "\n" + '#サマソニ' + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
+        return;
+      }
+      this.tweetBody = this.post.hash_tag + "\n" + "\n" + "\n" + "\n" + "↓↓アルバム詳細はこちら↓↓";
     },
     resetForm() {
       this.$emit('resetForm');
