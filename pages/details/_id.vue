@@ -282,7 +282,6 @@ export default {
           this.isLikeTooltip = false;
         }, 1000);
       }
-
     },
     async deleteLike() {
       await axios.$delete("likes/" + this.post.id);
