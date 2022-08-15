@@ -29,7 +29,9 @@
       </div>
         <infinite-loading
           @infinite="infiniteHandler"
-        ></infinite-loading>
+        >
+        <span slot="no-results"> </span>
+        </infinite-loading>
     </v-col>
   </v-row>
 </template>
