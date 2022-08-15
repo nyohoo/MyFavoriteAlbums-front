@@ -34,7 +34,7 @@
       
 
       <v-tab-item class="tab-color">
-        <v-container fill-height v-if="!posts">
+        <v-container fill-height v-if="posts.length === 0">
           <v-row justify="center" class="mt-16 pb-16 mb-16">
             <p class="text-subtitle-1">
               9枚の画像を選んで作成すると
@@ -46,7 +46,7 @@
           <v-row class="mt-16 pt-16" />
           <v-row class="mt-16 pt-16" />
           <v-row class="mt-16 pt-16" />
-          <v-spacer />
+          <v-row class="mt-16 pt-16" />
         </v-container>
 
         <v-container v-else>
@@ -57,7 +57,7 @@
 
       <!-- いいねタブ -->
       <v-tab-item class="tab-color">
-        <v-container fill-height v-if="!likes">
+        <v-container fill-height v-if="likes.length === 0">
           <v-row justify="center" class="mt-16">
             <p class="text-subtitle-1">
               {{ user.name }} さんの
@@ -69,9 +69,10 @@
           <v-row class="mt-16 pt-16" />
           <v-row class="mt-16 pt-16" />
           <v-row class="mt-16 pt-16" />
+          <v-row class="mt-16 pt-16" />
         </v-container>
 
-        <v-container fill-height v-if="likes">
+        <v-container fill-height v-else>
           <!-- ユーザーのいいねを表示する -->
           <UserLikesPage ref="like" :likes="likes" :user="user" @addLikes="addLikes" />
         </v-container>
@@ -90,7 +91,7 @@ export default {
   async asyncData(context) {
     // users/:uid/posts/と、users/:uid/likes/を同時に非同期で処理するため、以下の書き方となっている
     const results = [];
-    const urls = [`users/${context.params.id}/posts`, `users/${context.params.id}/likes`];
+    const urls = [`users/${context.params.id}`, `users/${context.params.id}/posts`, `users/${context.params.id}/likes`];
 
     for (const url of urls) {
       const response = await axios.get(url, {
@@ -103,8 +104,8 @@ export default {
 
     return {
       user: results[0].user,
-      posts: results[0].posts,
-      likes: results[1].likes,
+      posts: results[1].posts,
+      likes: results[2].likes,
     };
   },
   head() {
@@ -129,20 +130,6 @@ export default {
     UserLikesPage,
   },
   methods: {
-    // 無限スクロールでロードを検知するとユーザーの投稿一覧を取得する
-    async fetchPosts(newPostAskedPage) {
-      const { data: newPosts } = await axios.get(`users/${this.user.uid}/posts`, {
-        params: {
-          page: newPostAskedPage,
-        },
-      });
-      if (newPosts.length) {
-        this.posts = [...this.posts, ...newPosts];
-        this.$refs.post.$refs.infiniteLoader.stateChanger.loaded();
-      } else {
-        this.$refs.post.$refs.infiniteLoader.stateChanger.complete();
-      }
-    },
     addPosts(newPosts) {
       this.posts = [...this.posts, ...newPosts];
     },
