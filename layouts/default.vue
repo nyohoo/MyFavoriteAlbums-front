@@ -72,9 +72,7 @@
       </v-list>
 
       <!-- fix:ナビバーの下部に表示させる -->
-      
       <v-divider />
-      
       <v-list >
         <!-- 利用規約 -->
         <v-list-item :to="'/terms'" nuxt  dense>
@@ -86,6 +84,13 @@
         <v-list-item :to="'/privacy'" nuxt  dense>
           <v-list-item-content>
             <v-list-item-title v-text="'プライバシーポリシー'" />
+          </v-list-item-content>
+        </v-list-item>
+        <!-- お問合せ先 -->
+        <!-- ツイッターのアカウントを問い合わせ先にする -->
+        <v-list-item link href="https://twitter.com/jiffu_fu" dense>
+          <v-list-item-content>
+            <v-list-item-title v-text="'お問合せ'" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
