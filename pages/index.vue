@@ -106,7 +106,7 @@ export default {
       song: '',
       isInfinity: false,
       isHelpDialog: false,
-      selectedHashtag: '#私を構成する9枚',
+      selectedHashtag: '',
       items: [
         '#私を構成する9枚',
         '#邦ロック好きな人と繋がりたい',
@@ -208,6 +208,7 @@ export default {
     setDefaultHashtagByLocalStorage() {
       // ローカルストレージが空の場合はデフォルトのハッシュタグを利用する
       if (!window.localStorage.getItem("albums")) {
+        this.selectedHashtag = this.items[0];
         this.addHashtag();
         return;
       }
