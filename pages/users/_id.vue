@@ -112,6 +112,9 @@ export default {
     return {
       title: this.user.name + "さんのマイページ",
       titleTemplate: "",
+      meta: [
+      { hid: 'description', name: 'description', content: this.user.name + 'さんのマイページです。投稿・いいね・ブックマークなどがみれます。' }
+      ],
     };
   },
   data() {

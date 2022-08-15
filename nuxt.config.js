@@ -16,7 +16,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'keywords', name: 'keywords', content: 'MyFavoriteAlbums, #私を構成する9枚, 作成, ツイッター, Twitter, ハッシュタグ, 音楽, 共有, アルバム, ジャケット' },
+      { hid: 'keywords', name: 'keywords', content: 'MyFavoriteAlbums, #私を構成する9枚, #私を構成する9枚 作成, #私を構成する9枚 作り方, #私を構成する9枚 ツイッター, #私を構成する9枚 Twitter, 私を構成する9枚 音楽, 私を構成する9枚, 私を構成する9枚 作り方, 私を構成する9枚 ツイッター, 私を構成する9枚 Twitter' },
       { hid: 'description', name: 'description', content: 'MyFavoriteAlbumsは、#私を構成する9枚の作成・シェアを支援するサービスです。' },
       { name: 'format-detection', content: 'telephone=no' },
 

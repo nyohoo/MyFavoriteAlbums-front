@@ -212,6 +212,9 @@ export default {
     return {
       title: this.post.user.name + "さんの " + this.post.hash_tag,
       titleTemplate: "",
+      meta: [
+      { hid: 'description', name: 'description', content: this.post.user.name + 'さんの' + this.post.hash_tag + 'です。選んだ9枚のアルバムの詳細情報がみれます。' }
+      ],
     };
   },
   components: {

@@ -56,8 +56,9 @@ export default {
       title: "投稿一覧",
       meta: [
         {
+          hid: 'description',
           name: "description",
-          content: "投稿一覧ページです。"
+          content: "みんなが作った「#私を構成する9枚」の一覧ページです。"
         }
       ]
     };
