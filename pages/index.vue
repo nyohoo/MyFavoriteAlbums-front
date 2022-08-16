@@ -200,7 +200,7 @@ export default {
           } else {
             $state.complete()
           }
-        }, 1500)
+        }, 400)
       } catch (error) {
         $state.complete()
       }
