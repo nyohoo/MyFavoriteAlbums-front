@@ -75,7 +75,7 @@ export default {
           } else {
             $state.complete();
           }
-        }, 1000);
+        }, 500);
       } catch (error) {
         $state.complete();
       }

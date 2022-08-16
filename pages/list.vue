@@ -39,8 +39,10 @@
           </div>
 
           <!-- 無限スクロール -->
-          <infinite-loading @infinite="infiniteHandler">
-          </infinite-loading>
+          <v-col>
+            <infinite-loading @infinite="infiniteHandler">
+            </infinite-loading>
+          </v-col>
         </v-col>
       </v-row>
     </v-container>
@@ -87,7 +89,7 @@ export default {
           } else {
             $state.complete()
           }
-        }, 800)
+        }, 500)
       } catch (error) {
         $state.complete()
       }
