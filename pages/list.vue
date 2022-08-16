@@ -78,7 +78,7 @@ export default {
             page: this.page,
           },
         })
-        //そのままだと読み込み時にカクつくので1500毎に読み込む
+        //そのままだと読み込み時にカクつくので800毎に読み込む
         setTimeout(() => {
           if (this.page <= data.kaminari.pagenation.pages) {
             this.page += 1
@@ -87,7 +87,7 @@ export default {
           } else {
             $state.complete()
           }
-        }, 1500)
+        }, 800)
       } catch (error) {
         $state.complete()
       }
