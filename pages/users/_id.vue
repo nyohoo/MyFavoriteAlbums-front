@@ -60,9 +60,6 @@
         <v-container fill-height v-if="likes.length === 0">
           <v-row justify="center" class="mt-16">
             <p class="text-subtitle-1">
-              {{ user.name }} さんの
-            </p>
-            <p class="text-subtitle-1">
               いいねした投稿はありません。
             </p>
           </v-row>
