@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container fluid fill-height class="mx-0">
     <!-- userのプロフィールを表示する -->
     <v-container fill-height>
       <v-row>
@@ -23,7 +23,7 @@
 
     <!-- タブで投稿一覧・いいね一覧を切り替え -->
     <v-tabs
-      fixed-tabs
+      grow
       background-color="#121212">
       <v-tab
         v-for="title in titles"
@@ -78,6 +78,37 @@
         </v-container>
       </v-tab-item>
 
+      <!-- ブックマーク -->
+      <v-tab-item class="tab-color">
+        <v-container fill-height v-if="bookmarks == 0">
+          <v-row justify="center" class="mt-16">
+            <p class="text-subtitle-1">
+              あとで聴くに入れたアルバムが
+            </p>
+            <p class="text-subtitle-1">
+              ありません。
+            </p>
+          </v-row>
+          <v-row class="mt-16 pt-16" />
+          <v-row class="mt-16 pt-16" />
+          <v-row class="mt-16 pt-16" />
+          <v-row class="mt-16 pt-16" />
+        </v-container>
+
+        <v-container fill-height v-else>
+          <!-- ユーザーのいいねを表示する -->
+          <UserBookmarksPage ref="bookmark" 
+            :bookmarks="bookmarks" 
+            :user="user" 
+            :currentUser="currentUser" 
+            :currentUserBookmark="currentUserBookmark" 
+            @fetchMoreBookmarks="fetchMoreBookmarks" 
+            @addCurrentUserBookmark="addCurrentUserBookmark"
+            @removeCurrentUserBookmark="removeCurrentUserBookmark"
+            />
+        </v-container>
+      </v-tab-item>
+
     </v-tabs>
   </v-container>
 </template>
@@ -91,7 +122,11 @@ export default {
   async asyncData(context) {
     // users/:uid/posts/と、users/:uid/likes/を同時に非同期で処理するため、以下の書き方となっている
     const results = [];
-    const urls = [`users/${context.params.id}`, `users/${context.params.id}/posts`, `users/${context.params.id}/likes`];
+    const urls = [`users/${context.params.id}`,
+                  `users/${context.params.id}/posts`,
+                  `users/${context.params.id}/likes`,
+                  `users/${context.params.id}/bookmarks`,
+                  ];
 
     for (const url of urls) {
       const response = await axios.get(url, {
@@ -106,6 +141,7 @@ export default {
       user: results[0].user,
       posts: results[1].posts,
       likes: results[2].likes,
+      bookmarks: results[3].bookmarks,
     };
   },
   head() {
@@ -120,24 +156,52 @@ export default {
   data() {
     return {
       user: {},
+      currentUserBookmark: [],
       posts: [],
       likes: [],
       titles: [
         { id: 1, name: "投稿"},
         { id: 2, name: "いいね"},
+        { id: 3, name: "あとで聴く"},
       ],
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.login.user || {};
+    },
+  },
+  mounted() {
+    this.fetchCurrentUserBookmark();
   },
   components: {
     UserPostsPage,
     UserLikesPage,
   },
   methods: {
+    async fetchCurrentUserBookmark() {
+      if (!this.currentUser) return;
+      try {
+        const response = await axios.get(`bookmarks/${this.currentUser.uid}`);
+        this.currentUserBookmark = response.data.bookmarks;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     addPosts(newPosts) {
       this.posts = [...this.posts, ...newPosts];
     },
     addLikes(newLikes) {
       this.likes = [...this.likes, ...newLikes];
+    },
+    fetchMoreBookmarks(newBookmarks) {
+      this.bookmarks = [...this.bookmarks, ...newBookmarks];
+    },
+    addCurrentUserBookmark(newBookmark) {
+      this.currentUserBookmark = [...this.currentUserBookmark, newBookmark];
+    },
+    removeCurrentUserBookmark(removeBookmark) {
+      this.currentUserBookmark = this.currentUserBookmark.filter(bookmark => bookmark !== removeBookmark);
     },
   },
 }
