@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="8" md="7" lg="5">
-      <div v-for="like in likes" :key="like.id">
+      <div v-for="(like, index) in likes" :key="like.id">
         <v-hover v-slot:default="{ hover }">
           <v-card class="mt-5 mb-9 pt-3 px-2 fadeUp" hover rounded nuxt :href="`/details/${like.post_uuid}`"
             :class="hover ? 'user-transparent' : ''">
@@ -24,6 +24,82 @@
               <p class="text-h6 text-center mb-1">{{ like.hash_tag }}</p>
               <p class="text-subtitle-2 text-center mb-1">{{ like.created_at }}</p>
             </v-card-text>
+
+            <!-- いいねボタン -->
+            <!-- 非ログインユーザーの表示 -->
+            <!--ログイン後にいいねできる旨をツールチップで説明 -->
+            <v-tooltip 
+              v-if="currentUser.uid == null"
+              v-model="isLikeTooltip[index]"
+              top 
+              >
+              <template #activator="{ on }">
+                <v-btn 
+                  v-on="on"
+                  color="blue-grey darken-1" 
+                  height="75px"
+                  width="80px"
+                  fab 
+                  fixed 
+                  bottom 
+                  right
+                  icon 
+                  retain-focus-on-click 
+                  class="mb-0 pb-0" 
+                  style="bottom: -1px; right: 0px;"
+                  @click.prevent="beforeLoginUserLikeTooltip(index)"
+                >
+                  <v-icon>mdi-heart</v-icon>
+                </v-btn>
+              </template>
+              <span>ログイン後にいいね可能です</span>
+            </v-tooltip>
+
+            <div v-if="currentUser.uid != null && like.user.uid !== currentUser.uid">
+              <v-btn 
+                v-if="!currentUserLikes.includes(like.post_id)" 
+                color="blue-grey darken-1" 
+                height="75px"
+                width="80px"
+                fab 
+                fixed 
+                bottom 
+                right
+                icon 
+                retain-focus-on-click 
+                class="mb-0 pb-0" 
+                style="bottom: -1px; right: 0px;"
+                @click.prevent="addLike(like, index)">
+                <v-icon>mdi-heart-plus</v-icon>
+              </v-btn>
+
+              <v-tooltip 
+                v-if="currentUserLikes.includes(like.post_id)" 
+                top 
+                v-model="isLikeTooltip[index]"
+              >
+                <template #activator="{}">
+                  <v-btn 
+                    color="red" 
+                    elevation-19 
+                    height="75px"
+                    width="80px"
+                    fab 
+                    fixed 
+                    bottom 
+                    right
+                    retain-focus-on-click 
+                    icon 
+                    style="bottom: -1px; right: 0px;" 
+                    class="mb-0 pb-0"
+                    @click.prevent="deleteLike(like)">
+                    <v-icon>mdi-heart</v-icon>
+                  </v-btn>
+                </template>
+                <span>いいねしました</span>
+              </v-tooltip>
+            </div>
+
           </v-card>
         </v-hover>
       </div>
@@ -56,10 +132,60 @@ export default {
   },
   data() {
     return {
+      currentUserLikes: [],
+      isLikeTooltip: [],
       page: 1,
     }
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.login.user || {};
+    },
+  },
+  mounted() {
+    this.fetchCurrentUserLikes();
+  },
   methods: {
+    async fetchCurrentUserLikes() {
+      if (!this.currentUser) return;
+      try {
+        const response = await axios.get(`likes/${this.currentUser.uid}`);
+        this.currentUserLikes = response.data.likes;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async addLike(like, index) {
+      try {
+        await axios.$post("likes", {
+          id: like.post_id
+        });
+        this.isLikeTooltip[index] = true;
+        console.log(this.isLikeTooltip[index]);
+        this.currentUserLikes.push(like.post_id);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        // 1.5秒後にツールチップを閉じる
+        setTimeout(() => {
+          this.isLikeTooltip = [];
+          console.log(this.isLikeTooltip);
+        }, 1200);
+      }
+    },
+    async deleteLike(like) {
+      await axios.$delete("likes/" + like.post_id);
+      // currentUserLikesからlike.post_idと一致するものを除外
+      this.currentUserLikes = this.currentUserLikes.filter((id) => id !== like.post_id);
+    },
+    beforeLoginUserLikeTooltip(index) {
+      this.isLikeTooltip[index] = true;
+      // 1.5秒後にツールチップを閉じる
+      setTimeout(() => {
+        this.isLikeTooltip = [];
+        console.log(this.isLikeTooltip);
+      } , 500);
+    },
     async infiniteHandler($state) {
       try {
         this.page += 1;
