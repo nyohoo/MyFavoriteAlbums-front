@@ -75,13 +75,13 @@
       <v-divider />
       <v-list >
         <!-- 利用規約 -->
-        <v-list-item :to="'/terms'" nuxt  dense>
+        <v-list-item :to="'/terms'" nuxt dense>
           <v-list-item-content>
             <v-list-item-title v-text="'利用規約'" />
           </v-list-item-content>
         </v-list-item>
         <!-- プライバシーポリシー -->
-        <v-list-item :to="'/privacy'" nuxt  dense>
+        <v-list-item :to="'/privacy'" nuxt dense>
           <v-list-item-content>
             <v-list-item-title v-text="'プライバシーポリシー'" />
           </v-list-item-content>
