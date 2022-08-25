@@ -106,39 +106,46 @@
                         </v-hover>
                       </v-list-item-title>
 
-                      <!-- ブックマーク・コメント閲覧ボタン -->
+                      <!-- ブックマークボタン -->
                       <v-list-item-action  class="sm-mb-1 pl-2 mt-2">
                         <v-row>
-                          <!-- ブックマークボタン -->
                           <!-- 非ログインユーザー -->
                           <div v-if="user.uid == null">
                             <!--ログイン後にブックマークできる旨をツールチップで説明 -->
-                            <v-tooltip top>
+                            <v-tooltip 
+                              v-model="isLoginTooltip"
+                              top
+                            >
                               <template #activator="{ on }">
-                                <v-btn v-on="on" fab small icon height="40px" width="40px">
+                                <v-btn 
+                                  v-on="on" 
+                                  @click="beforeLoginUserBookmarkTooltip"
+                                  fab 
+                                  small 
+                                  icon 
+                                  height="40px" 
+                                  width="40px"
+                                >
                                   <v-icon>mdi-bookmark</v-icon>
                                 </v-btn>
                               </template>
                               <span>ログイン後に「あとで聴く」へ追加できます</span>
                             </v-tooltip>
                           </div>
-
                           <!-- ログインユーザー && 投稿の非作成者はブックマーク可能とする -->
                           <div v-if="user.uid != null && post.user.uid !== user.uid">
                             <!-- albumをブックマーク済みか確認 -->
-
-                                <v-btn
-                                  v-if="!currentUserBookmarks.includes(album.id)"
-                                  small
-                                  fab 
-                                  icon 
-                                  height="35px" 
-                                  width="35px" 
-                                  @click="addBookmark(album, index)"
-                                >
-                                  <v-icon>mdi-bookmark-outline</v-icon>
-                                </v-btn>
-                            
+                            <v-btn
+                              v-if="!currentUserBookmarks.includes(album.id)"
+                              small
+                              fab 
+                              icon 
+                              height="35px" 
+                              width="35px" 
+                              @click="addBookmark(album, index)"
+                            >
+                              <v-icon>mdi-bookmark-outline</v-icon>
+                            </v-btn>
                             <v-tooltip top 
                               v-if="currentUserBookmarks.includes(album.id)"
                               v-model="isBookmarkTooltip[index]"
@@ -172,7 +179,7 @@
                                 <v-icon v-on="on">mdi-comment-processing-outline</v-icon>
                               </v-btn>
                             </template>
-                            <span>コメント機能を実装予定です。</span>
+                            <span>コメント機能を追加予定です。</span>
                           </v-tooltip>
                         </v-row>
                       </v-list-item-action>
@@ -200,7 +207,10 @@
     <v-row v-if="user.uid == null" justify="center">
       <v-col cols="1" offset="8" offset-sm="7" offset-md="7" offset-lg="7">
         <!--ログイン後にいいねできる旨をツールチップで説明 -->
-        <v-tooltip top>
+        <v-tooltip 
+          v-model="isLikeTooltip"
+          top
+        >
           <template #activator="{ on }">
             <v-btn
               color="blue-grey darken-4"
@@ -210,6 +220,7 @@
               bottom
               depressed
               class="mb-9"
+              @click="beforeLoginUserLikeTooltip"
             >
               <v-icon>mdi-heart</v-icon>
             </v-btn>
@@ -373,7 +384,6 @@ export default {
         this.isBookmarkTooltip[index] = true;
         // ブックマークした時に自分のブックマーク一覧にspotify_album_idが追加される
         this.currentUserBookmarks = [...this.currentUserBookmarks, album.id];
-
       } catch (error) {
         console.log(error);
       } finally {
@@ -385,7 +395,23 @@ export default {
     async deleteBookmark(album) {
       await axios.$delete("bookmarks/" + album.id);
       this.currentUserBookmarks = [...this.currentUserBookmarks.filter(id => id !== album.id)];
-    }
+    },
+    beforeLoginUserLikeTooltip() {
+      this.isLikeTooltip = true;
+      // 1.5秒後にツールチップを閉じる
+      setTimeout(() => {
+        this.isLikeTooltip = false;
+        console.log(this.isLikeTooltip);
+      } , 1000);
+    },
+    beforeLoginUserBookmarkTooltip() {
+      this.isBookmarkTooltip = true;
+      // 1.5秒後にツールチップを閉じる
+      setTimeout(() => {
+        this.isBookmarkTooltip = [];
+        console.log(this.isBookmarkTooltip);
+      } , 1000);
+    },
   },
 };
 </script>
