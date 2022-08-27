@@ -136,7 +136,7 @@ export default {
 
     return {
       user: results[0].user,
-      posts: results[1].posts,
+      posts: results[1],
       likes: results[2].likes,
       bookmarks: results[3].bookmarks,
     };
