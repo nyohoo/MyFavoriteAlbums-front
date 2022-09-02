@@ -42,20 +42,12 @@ export default {
   },
   methods: {
     async handleLogout() {
-      try { 
-        await axios.post('/api/logout');
+        await axios.delete('auth/sign_out')
         this.$cookies.removeAll();
         this.$store.commit('login/user', {});
         this.$store.commit('login/auth', null);
         window.localStorage.removeItem('albums');
         window.location.href = '/'
-      } catch (error) {
-        this.$cookies.removeAll();
-        this.$store.commit('login/user', {});
-        this.$store.commit('login/auth', null);
-        window.localStorage.removeItem('albums');
-        window.location.href = '/'
-      }
     },
   },
 }
