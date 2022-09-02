@@ -41,8 +41,8 @@ export default {
     }
   },
   methods: {
-    async handleLogout() {
-      await axios.$delete('auth/sign_out')
+    handleLogout() {
+      axios.post('/api/logout');
       this.$cookies.removeAll()
       this.$store.commit('login/user', {})
       this.$store.commit('login/auth', null)
