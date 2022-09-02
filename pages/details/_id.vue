@@ -315,6 +315,7 @@ export default {
       isTwitterCardDialog: false,
       isLikeButton: false,
       isLikeTooltip: false,
+      isLoginTooltip: false,
       isBookmarkTooltip: [],
     };
   },
