@@ -147,7 +147,7 @@
                               <v-icon>mdi-bookmark-outline</v-icon>
                             </v-btn>
                             <v-tooltip top 
-                              v-else
+                              v-if="currentUserBookmarks.includes(album.id)"
                               v-model="isBookmarkTooltip[index]"
                             >
                               <template #activator="{ attrs }">
