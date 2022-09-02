@@ -43,9 +43,9 @@ export default {
   methods: {
     handleLogout() {
       axios.post('/api/logout');
-      this.$cookies.removeAll()
-      this.$store.commit('login/user', {})
-      this.$store.commit('login/auth', null)
+      this.$cookies.removeAll();
+      this.$store.commit('login/user', {});
+      this.$store.commit('login/auth', null);
       window.localStorage.removeItem('albums');
       window.location.href = '/'
     },
