@@ -9,7 +9,7 @@
             <v-container class="pb-0">
               <v-card tile flat>
                 <!-- likeに紐づくpost_idと一致するpostの画像を表示 -->
-                <v-img :src="like.image_path" :lazy-src="like.image_path" aspect-ratio="1">
+                <v-img :src="like.imagePath" :lazy-src="like.imagePath" aspect-ratio="1">
                   <!-- ローディング中の処理 -->
                   <template v-slot:placeholder>
                     <v-row class="fill-height ma-0" align="center" justify="center">
@@ -21,8 +21,8 @@
             </v-container>
             <v-card-text class="mt-0">
               <p class="text-subtitle-1 text-center mb-1">{{ like.user.name }}さんの</p>
-              <p class="text-h6 text-center mb-1">{{ like.hash_tag }}</p>
-              <p class="text-subtitle-2 text-center mb-1">{{ like.created_at }}</p>
+              <p class="text-h6 text-center mb-1">{{ like.hashTag }}</p>
+              <p class="text-subtitle-2 text-center mb-1">{{ like.createdAt }}</p>
             </v-card-text>
 
             <!-- いいねボタン -->
@@ -57,7 +57,7 @@
 
             <div v-if="currentUser.uid != null && like.user.uid !== currentUser.uid">
               <v-btn 
-                v-if="!currentUserLikes.includes(like.post_id)" 
+                v-if="!currentUserLikes.includes(like.id)" 
                 color="blue-grey darken-1" 
                 height="75px"
                 width="80px"
@@ -195,8 +195,8 @@ export default {
           },
         });
         setTimeout(() => {
-          if (data['data']['likes'].length) {
-            this.addLikes(data['data']['likes']);
+          if (data.data.length) {
+            this.addLikes(data.data);
             $state.loaded();
           } else {
             $state.complete();
