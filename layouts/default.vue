@@ -163,12 +163,12 @@ export default {
       this.$router.push('/')
     },
     jumpLogin() {
-      // settimeoutを使って、twitterの認証画面を開く前に、0.3秒待つ
+      // settimeoutを使って、twitterの認証画面を開く前に、1秒待つ
       // これがないと、モバイルのネイティブアプリ上からブラウザを開き、投稿詳細画面から
       // ログインにすぐに遷移した際にtwitterの認証画面が開かない
       setTimeout(() => {
         this.$router.push('/login')
-      }, 300)
+      }, 1000)
     }
   }
 }
