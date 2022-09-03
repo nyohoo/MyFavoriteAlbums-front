@@ -4,15 +4,8 @@
     <v-card class="d-flex flex-column mx-auto my-6 flat" width="50vh">
       <v-card-title class="d-flex justify-center pa-0 mt-6">ログイン</v-card-title>
       <v-card-text class="d-flex justify-center flex-column">
-        <v-btn 
-          class="fill-width mt-6 text-capitalize caption mx-4" 
-          rounded 
-          color="#00ACEE" 
-          dark 
-          depressed 
-          height="48px"
-          @click="twitterLogin"
-          >
+        <v-btn class="fill-width mt-6 text-capitalize caption mx-4" rounded color="#00ACEE" dark depressed height="48px"
+          :href="twitterLoginURL">
           <v-icon style="height: 20px" color="white" class="mr-2">
             mdi-twitter
           </v-icon>
@@ -52,16 +45,6 @@ export default {
   computed: {
     twitterLoginURL() {
       return `${this.twitter.url}?auth_origin_url=${encodeURI(this.twitter.redirectUrl)}`
-    },
-  },
-  methods: {
-    // settimeoutを使って、twitterの認証画面を開く前に、0.5秒待つ
-    // これがないと、モバイルのネイティブアプリ上からブラウザを開き、投稿詳細画面から
-    // ログインにすぐに遷移した際にtwitterの認証画面が開かない
-    twitterLogin() {
-      setTimeout(() => {
-        window.location.href = this.twitterLoginURL;
-      }, 500);
     },
   },
 };

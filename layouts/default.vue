@@ -43,7 +43,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="'/login'" nuxt exact v-if="!islogin">
+        <v-list-item @click="jumpLogin" exact v-if="!islogin">
           <v-list-item-action >
             <v-icon>mdi-account-plus</v-icon>
           </v-list-item-action>
@@ -162,6 +162,14 @@ export default {
     jumpHome() {
       this.$router.push('/')
     },
+    jumpLogin() {
+      // settimeoutを使って、twitterの認証画面を開く前に、0.3秒待つ
+      // これがないと、モバイルのネイティブアプリ上からブラウザを開き、投稿詳細画面から
+      // ログインにすぐに遷移した際にtwitterの認証画面が開かない
+      setTimeout(() => {
+        this.$router.push('/login')
+      }, 300)
+    }
   }
 }
 </script>
