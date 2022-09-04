@@ -113,7 +113,6 @@
                           <div v-if="user.uid == null">
                             <!--ログイン後にブックマークできる旨をツールチップで説明 -->
                             <v-tooltip 
-                              v-model="isLoginTooltip"
                               top
                             >
                               <template #activator="{ on }">

@@ -3,12 +3,12 @@
     <v-col cols="12" sm="8" md="7" lg="5">
       <div v-for="(like, index) in likes" :key="like.id">
         <v-hover v-slot:default="{ hover }">
-          <v-card class="mt-5 mb-9 pt-3 px-2 fadeUp" hover rounded nuxt :href="`/details/${like.post_uuid}`"
+          <v-card class="mt-5 mb-9 pt-3 px-2 fadeUp" hover rounded nuxt :href="`/details/${like.uuid}`"
             :class="hover ? 'user-transparent' : ''">
             <!-- postの画像表示のためカードで枠組み -->
             <v-container class="pb-0">
               <v-card tile flat>
-                <!-- likeに紐づくpost_idと一致するpostの画像を表示 -->
+                <!-- likeに紐づくidと一致するpostの画像を表示 -->
                 <v-img :src="like.imagePath" :lazy-src="like.imagePath" aspect-ratio="1">
                   <!-- ローディング中の処理 -->
                   <template v-slot:placeholder>
@@ -74,7 +74,7 @@
               </v-btn>
 
               <v-tooltip 
-                v-if="currentUserLikes.includes(like.post_id)" 
+                v-if="currentUserLikes.includes(like.id)" 
                 top 
                 v-model="isLikeTooltip[index]"
               >
@@ -158,11 +158,11 @@ export default {
     async addLike(like, index) {
       try {
         await axios.$post("likes", {
-          id: like.post_id
+          id: like.id
         });
         this.isLikeTooltip[index] = true;
         console.log(this.isLikeTooltip[index]);
-        this.currentUserLikes.push(like.post_id);
+        this.currentUserLikes.push(like.id);
       } catch (error) {
         console.log(error);
       } finally {
@@ -174,9 +174,9 @@ export default {
       }
     },
     async deleteLike(like) {
-      await axios.$delete("likes/" + like.post_id);
-      // currentUserLikesからlike.post_idと一致するものを除外
-      this.currentUserLikes = this.currentUserLikes.filter((id) => id !== like.post_id);
+      await axios.$delete("likes/" + like.id);
+      // currentUserLikesからlike.idと一致するものを除外
+      this.currentUserLikes = this.currentUserLikes.filter((id) => id !== like.id);
     },
     beforeLoginUserLikeTooltip(index) {
       this.isLikeTooltip[index] = true;

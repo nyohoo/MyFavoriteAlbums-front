@@ -138,7 +138,7 @@ export default {
       user: results[0].user,
       posts: results[1],
       likes: results[2],
-      bookmarks: results[3].bookmarks,
+      bookmarks: results[3].results,
     };
   },
   head() {
@@ -156,6 +156,7 @@ export default {
       currentUserBookmark: [],
       posts: [],
       likes: [],
+      bookmarks: [],
       titles: [
         { id: 1, name: "投稿"},
         { id: 2, name: "いいね"},

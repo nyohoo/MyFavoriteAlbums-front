@@ -160,8 +160,8 @@ export default {
           },
         });
         setTimeout(() => {
-          if (data.length) {
-            this.fetchMoreBookmarks(data);
+          if (data.data.results.length != 0) {
+            this.fetchMoreBookmarks(data.data.results);
             $state.loaded();
           } else {
             $state.complete();
