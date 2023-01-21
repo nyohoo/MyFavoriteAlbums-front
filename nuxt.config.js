@@ -2,6 +2,8 @@ require('dotenv').config()
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  ssr: true,
+  target: 'server',
   // Railsと被らないようにポート番号を設定
   server: {
     port: process.env.PORT || 8080
