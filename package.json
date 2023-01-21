@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
+    "dev": "NODE_OPTIONS='--openssl-legacy-provider' nuxt",
+    "build": "NODE_OPTIONS='--openssl-legacy-provider' nuxt build",
+    "start": "NODE_OPTIONS='--openssl-legacy-provider' nuxt start",
+    "generate": "NODE_OPTIONS='--openssl-legacy-provider' nuxt generate",
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.13.6", 
+    "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/sitemap": "^2.4.0",
     "cookie-universal-nuxt": "^2.2.1",
     "core-js": "^3.19.3",
@@ -24,6 +24,7 @@
     "vue-template-compiler": "^2.6.14",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.6.1",
+    "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0",
     "webpack": "^4.46.0"
   },
