@@ -128,7 +128,7 @@
             <v-col cols="12" xs="12" sm="8" md="6" lg="5">
               <!-- 単一の投稿表示 -->
               <v-hover v-slot:default="{ hover }">
-                <v-card elevation="1" class="mt-5 mb-9 pt-6 fadeDown" hover rounded-lg nuxt
+                <v-card elevation="1" class="mt-5 mb-1 pt-6 fadeDown" hover rounded-lg nuxt
                   :href="`/details/${random_post.post_uuid}`" :class="hover ? 'list-transparent' : ''">
                   <!-- postの画像表示のためカードで枠組み -->
                   <v-card tile flat class="mx-4">
