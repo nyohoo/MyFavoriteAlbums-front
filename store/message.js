@@ -1,34 +1,28 @@
 export const state = () => ({
-    message: "",
-    type: "",
-    status: false,
+  message: "",
+  type: "",
+  status: false,
 })
 
 export const getters = {
-    message: state => state.message,
-    type: state => state.type,
-    status: state => state.status,
-  }
-
-export const mutations = {
-    setMessage(state, message) {
-      state.message = message
-    },
-    setType(state, type) {
-      state.type = type
-    },
-    setStatus(state, bool) {
-      state.status = bool
-    },
-  }
+  message: state => state.message,
+  type: state => state.type,
+  status: state => state.status,
+}
 
 export const actions = {
-  showMessage({ commit }, { message, type, status }) {
-    commit("setMessage", message)
-    commit("setType", type)
-    commit("setStatus", status)
+  setMessage({ commit }, payload) {
+    commit("setMessage", payload)
     setTimeout(() => {
-      commit("setStatus", !status)
+      commit("setMessage", { message: "", type: "", status: false })
     }, 2000)
   },
+}
+
+export const mutations = {
+  setMessage(state, payload) {
+    state.message = payload.message
+    state.type = payload.type
+    state.status = payload.status
+  }
 }
