@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <p v-if="flashMessage.status">{{ flashMessage }}</p>
     <v-row justify="center">
       <v-col cols="12">
         <v-container mt-6 mb-8>
@@ -283,11 +284,15 @@ import TwitterShare from "../../components/TwitterShare.vue";
 
 export default {
   async asyncData(context) {
-    const data = await axios.$get("posts/" + context.params.id);
-    return { 
-      post: data,
-      currentUserBookmarks: data.currentUserBookmarks,
-    };
+    try {
+      const data = await context.$axios.$get("posts/" + context.params.id);
+      return { 
+        post: data,
+        currentUserBookmarks: data.currentUserBookmarks,
+      };
+    } catch (error) {
+      context.redirect('/notFoundPost');
+    }
   },
   head() {
     return {
@@ -302,7 +307,7 @@ export default {
     Iframe,
     ConfirmDialog,
     TwitterShare
-},
+  },
   data() {
     return {
       // loading: true,
@@ -322,6 +327,9 @@ export default {
     user() {
       // ユーザー情報がない場合は空で返す
       return this.$store.state.login.user || {};
+    },
+    flashMessage() {
+      return this.$store.state.message;
     },
   },
   destroyed() {

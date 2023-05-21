@@ -1,8 +1,8 @@
 <template>
   <v-container fluid fill-height>
     <v-container fill-height>
-
-            <!-- タブの定義 -->
+      <p v-if="flashMessage.status">{{ flashMessage }}</p>
+      <!-- タブの定義 -->
       <v-tabs grow>
         <v-tab
         v-for="title in titles"
@@ -193,6 +193,9 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.login.user || {};
+    },
+    flashMessage() {
+      return this.$store.state.message;
     },
   },
   mounted() {
