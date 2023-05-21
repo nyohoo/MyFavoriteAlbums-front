@@ -68,7 +68,6 @@ export default {
           },
         });
         setTimeout(() => {
-          console.log(data.data);
           if (data.data.length) {
             this.addPosts(data.data);
             $state.loaded();
