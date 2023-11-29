@@ -32,7 +32,9 @@
                       </v-img>
                     </v-card>
                     <v-card-text>
-                      <p class="text-subtitle-1 text-center mb-1">{{ post.user.name }}さんの</p>
+                      <!-- TwitterAPI対応 一覧表示でユーザー名を非表示 -->
+                      <!-- <p class="text-subtitle-1 text-center mb-1">{{ post.user.name }}さんの</p> -->
+                      
                       <p class="text-h6 text-center mb-1">{{ post.hash_tag }}</p>
                       <p class="text-subtitle-2 text-center mt-5 mb-0">{{ post.created_at }}</p>
                     </v-card-text>

@@ -1,3 +1,5 @@
+<!-- TwitterAPI対応 ログインは暫定としてしない仕様とする -->
+
 <template>
   <!-- ログアウト -->
   <v-container fluid fill-height>

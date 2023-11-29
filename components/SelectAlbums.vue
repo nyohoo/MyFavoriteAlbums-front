@@ -305,8 +305,9 @@ export default {
         return setTimeout(() => this.flashCreate = false, 3000);
       }
 
+      // TwitterAPI対応 暫定として、ログイン不要で作成できるように変更する
       // ログイン中のユーザーか確認する
-      if (!this.$store.state.login.user) return this.$router.push({ name: "login" });
+      // if (!this.$store.state.login.user) return this.$router.push({ name: "login" });
 
       // ローディングを表示する
       this.isLoading = true;

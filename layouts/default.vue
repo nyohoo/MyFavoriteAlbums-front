@@ -43,7 +43,9 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item @click="jumpLogin" exact v-if="!islogin">
+        <!-- TwitterAPI対応　ログイン機能を停止する ここから -->
+
+        <!-- <v-list-item @click="jumpLogin" exact v-if="!islogin">
           <v-list-item-action >
             <v-icon>mdi-account-plus</v-icon>
           </v-list-item-action>
@@ -68,7 +70,10 @@
           <v-list-item-content>
             <v-list-item-title v-text="'ログアウト'" />
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
+
+        <!-- TwitterAPI対応　ログイン機能を停止する ここまで -->
+
       </v-list>
 
       <!-- fix:ナビバーの下部に表示させる -->
