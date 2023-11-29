@@ -6,7 +6,9 @@
         <v-container mt-6 mb-8>
           <!-- （ユーザー名）の（ハッシュタグ名）の形でヘッドタイトル作成-->
           <!-- ユーザー名 -->
-          <v-row algin="center" justify="center">
+
+          <!-- TwitterAPI暫定対応 ユーザーは共有アカウントにするので、ユーザー名を非表示にする ここから -->
+          <!-- <v-row algin="center" justify="center">
             <div align="left">
               <p class="text-h6">
                 <v-hover v-slot:default="{ hover }">
@@ -17,7 +19,9 @@
               </p>
             </div>
             <p class="text-h6" align="left">さんの</p>
-          </v-row>
+          </v-row> -->
+          <!-- TwitterAPI暫定対応 ユーザーは共有アカウントにするので、ユーザー名を非表示にする ここまで -->
+
           <!-- ハッシュタグ名 -->
           <v-row algin="center" justify="center" class="mt-0 mb-5">
             <div v-text="post.hash_tag" class="text-h5" />
@@ -53,8 +57,15 @@
                 </v-container>
               </v-card>
 
+              <!-- TwitterAPI対応 シェアの方法を変更 ここから -->
+              <v-col class="d-flex justify-center pt-5">
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-show-count="false" data-text="#私を構成する9枚 を作ってみたよ！">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              </v-col>
+              <!-- TwitterAPI対応 シェアの方法を変更 ここまで -->
+
               <!-- ログイン中の場合はツイートボタンと削除ボタンを表示する -->
               <v-col v-if="post.user.uid === user.uid" class="d-flex justify-center pt-5">
+
                 <!-- Twitter共有ボタン -->
                 <v-btn class="mx-2" width="80px" color="blue darken-1" style="text-transform: none;" rounded @click="openTwitterCard">
                   <v-icon>mdi-twitter</v-icon>
@@ -296,7 +307,9 @@ export default {
   },
   head() {
     return {
-      title: this.post.user.name + "さんの " + this.post.hash_tag,
+      // TwitterAPI対応 タイトルの表示にユーザー名を含めない
+      // title: this.post.user.name + "さんの " + this.post.hash_tag,
+      title: this.post.hash_tag,
       titleTemplate: "",
       meta: [
       { hid: 'description', name: 'description', content: this.post.user.name + 'さんの' + this.post.hash_tag + 'です。選んだ9枚のアルバムの詳細情報がみれます。' }
